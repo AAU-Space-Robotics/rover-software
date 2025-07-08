@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Launching the Robot - AAU Rover Software Documentation</title>
+        <title>Launching - RLRoverLab Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -136,7 +136,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">RLRoverLab Documentation</h1>
 
                     <div class="right-buttons">
                         <a href="../../print.html" title="Print this book" aria-label="Print this book">
@@ -168,52 +168,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
-<p>The GORM rover is a 6-wheel, 4-steer robotic system built with ROS 2. The software is organized into modular packages running in Docker containers.</p>
-<h2 id="system-overview"><a class="header" href="#system-overview">System Overview</a></h2>
-<p>The rover consists of these main ROS 2 packages:</p>
-<ul>
-<li><strong><code>gorm_bringup</code></strong> - Main system launcher with robot state publisher and control nodes</li>
-<li><strong><code>gorm_base_control</code></strong> - Critical interface for 6-wheel, 4-steer kinematics (<code>/cmd_vel</code> → motor commands + <code>/odom</code>)</li>
-<li><strong><code>gorm_teleop</code></strong> - Manual control via joystick (<code>teleop_twist_joy_node</code>, joy-to-cmd_vel converter)</li>
-<li><strong><code>gorm_sensors</code></strong> - Sensor drivers for RGBD cameras, IMU, etc.</li>
-<li><strong><code>hardware</code></strong> - Low-level hardware interface and motor control</li>
-</ul>
-<h2 id="quick-start-with-docker"><a class="header" href="#quick-start-with-docker">Quick Start with Docker</a></h2>
-<h3 id="1-build-and-run-container"><a class="header" href="#1-build-and-run-container">1. Build and Run Container</a></h3>
-<pre><code class="language-bash">cd docker
-./run.sh
+                        <h1 id="launching-the-software"><a class="header" href="#launching-the-software">Launching the Software</a></h1>
+<p>In order to launch the rover software, you need to follow these steps:</p>
+<ol>
+<li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
+<pre><code class="language-bash">cd /workspace/rover-software/docker
 </code></pre>
-<p>This builds the container and starts it in detached mode with GPU support, device access, and networking.</p>
-<h3 id="2-attach-to-container"><a class="header" href="#2-attach-to-container">2. Attach to Container</a></h3>
-<pre><code class="language-bash">./attach.sh
+</li>
+<li><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software and attach to it.
+<pre><code class="language-bash">./run.sh
+./attach.sh
 </code></pre>
-<p>Opens an interactive bash session inside the <code>rover-software</code> container.</p>
-<h3 id="3-launch-the-system"><a class="header" href="#3-launch-the-system">3. Launch the System</a></h3>
-<p>Inside the container, choose your launch mode:</p>
-<p><strong>Full system bringup:</strong></p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
+</li>
+<li><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.
+<pre><code class="language-bash">colcon build
+source install/setup.bash
 </code></pre>
-<p><strong>Teleop mode (manual control):</strong></p>
+</li>
+<li><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
-<p><strong>Individual components:</strong></p>
-<pre><code class="language-bash"># Motors only
-ros2 launch gorm_base_control motor_driver.launch.py
-
-# Cameras only  
-ros2 launch gorm_sensors cameras.launch.py
-
-# Joystick control only
-ros2 launch gorm_teleop teleop.launch.py
-</code></pre>
-<h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
-<ul>
-<li><code>/cmd_vel</code> - Velocity commands (geometry_msgs/Twist)</li>
-<li><code>/odom</code> - Odometry feedback (nav_msgs/Odometry)</li>
-<li><code>/joy</code> - Joystick input</li>
-<li>Camera and sensor topics from <code>gorm_sensors</code></li>
-</ul>
+</li>
+</ol>
 
                     </main>
 
