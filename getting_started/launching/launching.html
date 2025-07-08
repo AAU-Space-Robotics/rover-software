@@ -168,28 +168,45 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="launching-the-software"><a class="header" href="#launching-the-software">Launching the Software</a></h1>
-<p>In order to launch the rover software, you need to follow these steps:</p>
-<ol>
-<li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
-<pre><code class="language-bash">cd /workspace/rover-software/docker
+                        <h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
+<h2 id="quick-start-with-docker"><a class="header" href="#quick-start-with-docker">Quick Start with Docker</a></h2>
+<h3 id="1-connect-to-the-rover-ssh-into-the-rovers-computer-using-the-following-command"><a class="header" href="#1-connect-to-the-rover-ssh-into-the-rovers-computer-using-the-following-command">1. <strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</a></h3>
+<pre><code class="language-bash">ssh gorm@192.168.0.2 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
 </code></pre>
-</li>
-<li><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software and attach to it.
-<pre><code class="language-bash">./run.sh
-./attach.sh
+<p>The default password is <code>gorm</code>.</p>
+<h3 id="2-build-and-run-container"><a class="header" href="#2-build-and-run-container">2. Build and Run Container</a></h3>
+<pre><code class="language-bash">cd docker
+./run.sh
 </code></pre>
-</li>
-<li><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.
-<pre><code class="language-bash">colcon build
-source install/setup.bash
+<p>This builds the container and starts it in detached mode with GPU support, device access, and networking.</p>
+<h3 id="3-attach-to-container"><a class="header" href="#3-attach-to-container">3. Attach to Container</a></h3>
+<pre><code class="language-bash">./attach.sh
 </code></pre>
-</li>
-<li><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.
+<p>Opens an interactive bash session inside the <code>rover-software</code> container.</p>
+<h3 id="4-launch-the-system"><a class="header" href="#4-launch-the-system">4. Launch the System</a></h3>
+<p>Inside the container, choose your launch mode:</p>
+<p><strong>Full system bringup:</strong></p>
+<pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
+</code></pre>
+<p><strong>Teleop mode (manual control):</strong></p>
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
-</li>
-</ol>
+<p><strong>Individual components:</strong></p>
+<pre><code class="language-bash"># Motors only
+ros2 launch gorm_base_control motor_driver.launch.py
+
+# Cameras only  
+ros2 launch gorm_sensors cameras.launch.py
+
+# Joystick control only
+ros2 launch gorm_teleop teleop.launch.py
+</code></pre>
+<h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
+<ul>
+<li><code>/cmd_vel</code> - Velocity commands (geometry_msgs/Twist)</li>
+<li><code>/odom</code> - Odometry feedback (nav_msgs/Odometry)</li>
+<li><code>/joy</code> - Joystick input</li>
+</ul>
 
                     </main>
 

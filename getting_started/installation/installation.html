@@ -188,17 +188,26 @@ sudo dkms install -m xpad -v 0.4
 </ol>
 <h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
 <ol>
-<li><strong>Clone the Repository</strong>: Clone the AAU Rover Software repository to the rover's computer.
+<li>
+<p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
+<pre><code class="language-bash">ssh gorm@192.168.0.2 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
+</code></pre>
+<p>The default password is <code>gorm</code>.</p>
+</li>
+<li>
+<p><strong>Clone the Repository</strong>: Clone the AAU Rover Software repository to the rover's computer.</p>
 <pre><code class="language-bash"> git clone https://github.com/aaU-Space-Robotics/rover-software/
  cd rover-software
 </code></pre>
 </li>
-<li><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and build the Docker images.
+<li>
+<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and build the Docker images.</p>
 <pre><code class="language-bash">cd docker
 ./run.sh
 </code></pre>
 </li>
-<li><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.
+<li>
+<p><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.</p>
 <pre><code class="language-bash"># Attach to the running Docker container
 docker exec -it rover-software bash
 
