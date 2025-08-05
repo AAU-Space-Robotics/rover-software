@@ -38,6 +38,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc.js"></script>
@@ -94,10 +95,13 @@
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -148,7 +152,12 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -169,7 +178,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
-<h2 id="quick-start-with-docker"><a class="header" href="#quick-start-with-docker">Quick Start with Docker</a></h2>
+<p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="../../deployment/overview.html">Deployment Guide</a>.</p>
+<h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
 <ol>
 <li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
 <pre><code class="language-bash">cd /workspace/rover-software/docker
@@ -190,6 +200,9 @@ source install/setup.bash
 </code></pre>
 </li>
 </ol>
+<blockquote>
+<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, use <code>docker-compose up -d rover-deploy</code>. See the <a href="../../deployment/production.html">Production Deployment Guide</a> for details.</p>
+</blockquote>
 <h2 id="launching-the-gorm-rover-1"><a class="header" href="#launching-the-gorm-rover-1">Launching the GORM Rover</a></h2>
 <p><strong>Full system bringup:</strong></p>
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
@@ -260,6 +273,7 @@ ros2 launch gorm_teleop teleop.launch.py
         <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>

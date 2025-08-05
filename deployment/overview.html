@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation - AAU Rover Software Documentation</title>
+        <title>Deployment Overview - AAU Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon.svg">
-        <link rel="shortcut icon" href="../../favicon.png">
-        <link rel="stylesheet" href="../../css/variables.css">
-        <link rel="stylesheet" href="../../css/general.css">
-        <link rel="stylesheet" href="../../css/chrome.css">
-        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -35,13 +35,13 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -108,7 +108,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -143,7 +143,7 @@
                     <h1 class="menu-title">AAU Rover Software Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -177,71 +177,47 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
-<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover.</p>
-<h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
+                        <h1 id="deployment-overview"><a class="header" href="#deployment-overview">Deployment Overview</a></h1>
+<p>The GORM rover software provides two deployment modes: <strong>development</strong> and <strong>production</strong>.</p>
+<h2 id="development-mode"><a class="header" href="#development-mode">Development Mode</a></h2>
 <ul>
-<li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
-<li><strong>Sensors</strong>: 2x Zed 2i Cameras,</li>
+<li>Source code mounted as volumes for live editing</li>
+<li>Manual building inside container</li>
+<li>Interactive development and testing</li>
 </ul>
-<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
-<ol>
-<li><strong>Docker</strong></li>
-<li><strong>Docker Compose</strong></li>
-<li><strong>Nvidia Container Toolkit</strong></li>
-<li><strong>Resolve Joy Driver Issues</strong>: If you encounter issues with the joystick driver, you can resolve them by opening a terminal and running the following commands: see <a href="https://forums.developer.nvidia.com/t/logitech-f710-kernel-module-issues-jetpack-6/296904/21">Joy Driver Issues</a>.
-<pre><code class="language-bash">sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
-sudo dkms install -m xpad -v 0.4
-</code></pre>
-</li>
-</ol>
-<h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
-<ol>
-<li>
-<p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
-<pre><code class="language-bash">ssh gorm@192.168.0.2 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
-</code></pre>
-<p>The default password is <code>gorm</code>.</p>
-</li>
-<li>
-<p><strong>Clone the Repository</strong>: Clone the AAU Rover Software repository to the rover's computer.</p>
-<pre><code class="language-bash"> git clone https://github.com/aaU-Space-Robotics/rover-software/
- cd rover-software
-</code></pre>
-</li>
-<li>
-<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and build the Docker images.</p>
-<pre><code class="language-bash">cd docker
-./run.sh
-</code></pre>
-<blockquote>
-<p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>
-</blockquote>
-</li>
-<li>
-<p><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.</p>
-<pre><code class="language-bash"># Attach to the running Docker container
-docker exec -it rover-software bash
+<h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
+<ul>
+<li>Source code copied and pre-built during image creation</li>
+<li><strong>Runs continuously in the background</strong> with automatic restarts</li>
+<li>Optimized for autonomous operation</li>
+</ul>
+<h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>Dockerfile.deploy</code></td><td>Production Dockerfile with pre-built workspace</td></tr>
+<tr><td><code>entrypoint.deploy.sh</code></td><td>Production entrypoint with startup modes</td></tr>
+<tr><td><code>build.sh</code></td><td>Build script for deployment image</td></tr>
+<tr><td><code>docker-compose.yaml</code></td><td>Both development and production services</td></tr>
+</tbody></table>
+</div>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><code class="language-bash"># Build production image
+cd docker/
+./build.sh
 
-# Build the ROS2 packages inside the container
-colcon build
-source install/setup.bash
-
-# Launch the rover software
-ros2 launch gorm_bringup bringup_teleop.launch.py
+# Deploy (runs in background continuously)
+docker-compose up -d rover-deploy
 </code></pre>
-</li>
-</ol>
+<p>The production deployment will run continuously in the background unless manually stopped.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../getting_started/examples/examples.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../getting_started/launching/launching.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../deployment/development-vs-production.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -251,11 +227,11 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../getting_started/examples/examples.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../getting_started/launching/launching.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../deployment/development-vs-production.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -270,13 +246,13 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
         </script>
 
 
-        <script src="../../elasticlunr.min.js"></script>
-        <script src="../../mark.min.js"></script>
-        <script src="../../searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../../clipboard.min.js"></script>
-        <script src="../../highlight.js"></script>
-        <script src="../../book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 

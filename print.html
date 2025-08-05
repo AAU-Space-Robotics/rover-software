@@ -39,6 +39,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -95,10 +96,13 @@
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -149,7 +153,12 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -221,6 +230,9 @@ sudo dkms install -m xpad -v 0.4
 <pre><code class="language-bash">cd docker
 ./run.sh
 </code></pre>
+<blockquote>
+<p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="getting_started/installation/../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>
+</blockquote>
 </li>
 <li>
 <p><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.</p>
@@ -237,7 +249,8 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
-<h2 id="quick-start-with-docker"><a class="header" href="#quick-start-with-docker">Quick Start with Docker</a></h2>
+<p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="getting_started/launching/../../deployment/overview.html">Deployment Guide</a>.</p>
+<h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
 <ol>
 <li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
 <pre><code class="language-bash">cd /workspace/rover-software/docker
@@ -258,6 +271,9 @@ source install/setup.bash
 </code></pre>
 </li>
 </ol>
+<blockquote>
+<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, use <code>docker-compose up -d rover-deploy</code>. See the <a href="getting_started/launching/../../deployment/production.html">Production Deployment Guide</a> for details.</p>
+</blockquote>
 <h2 id="launching-the-gorm-rover-1"><a class="header" href="#launching-the-gorm-rover-1">Launching the GORM Rover</a></h2>
 <p><strong>Full system bringup:</strong></p>
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
@@ -282,6 +298,162 @@ ros2 launch gorm_teleop teleop.launch.py
 <li><code>/joy</code> - Joystick input</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><p>Here goes the code for the example.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deployment-overview"><a class="header" href="#deployment-overview">Deployment Overview</a></h1>
+<p>The GORM rover software provides two deployment modes: <strong>development</strong> and <strong>production</strong>.</p>
+<h2 id="development-mode"><a class="header" href="#development-mode">Development Mode</a></h2>
+<ul>
+<li>Source code mounted as volumes for live editing</li>
+<li>Manual building inside container</li>
+<li>Interactive development and testing</li>
+</ul>
+<h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
+<ul>
+<li>Source code copied and pre-built during image creation</li>
+<li><strong>Runs continuously in the background</strong> with automatic restarts</li>
+<li>Optimized for autonomous operation</li>
+</ul>
+<h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>Dockerfile.deploy</code></td><td>Production Dockerfile with pre-built workspace</td></tr>
+<tr><td><code>entrypoint.deploy.sh</code></td><td>Production entrypoint with startup modes</td></tr>
+<tr><td><code>build.sh</code></td><td>Build script for deployment image</td></tr>
+<tr><td><code>docker-compose.yaml</code></td><td>Both development and production services</td></tr>
+</tbody></table>
+</div>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><code class="language-bash"># Build production image
+cd docker/
+./build.sh
+
+# Deploy (runs in background continuously)
+docker-compose up -d rover-deploy
+</code></pre>
+<p>The production deployment will run continuously in the background unless manually stopped.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="development-vs-production"><a class="header" href="#development-vs-production">Development vs Production</a></h1>
+<h2 id="development-setup-rover-service"><a class="header" href="#development-setup-rover-service">Development Setup (<code>rover</code> service)</a></h2>
+<p><strong>Use for:</strong> Active development, debugging, testing</p>
+<ul>
+<li>Source code mounted as volumes (<code>../src:/home/workspace/src</code>)</li>
+<li>Manual building required (<code>colcon build</code>)</li>
+<li>Interactive environment</li>
+<li>Code changes immediately available</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<pre><code class="language-bash">docker-compose up -d rover
+docker-compose exec rover bash
+colcon build &amp;&amp; source install/setup.bash
+ros2 launch gorm_bringup bringup_teleop.launch.py
+</code></pre>
+<h2 id="production-setup-rover-deploy-service"><a class="header" href="#production-setup-rover-deploy-service">Production Setup (<code>rover-deploy</code> service)</a></h2>
+<p><strong>Use for:</strong> Autonomous operation, field deployment, competitions</p>
+<ul>
+<li>Source code copied during image build</li>
+<li>Pre-built workspace (no manual building needed)</li>
+<li><strong>Runs continuously in background</strong> with <code>restart: unless-stopped</code></li>
+<li>Production-ready and stable</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<pre><code class="language-bash">./build.sh
+docker-compose up -d rover-deploy  # Runs in background continuously
+</code></pre>
+<h2 id="key-differences"><a class="header" href="#key-differences">Key Differences</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Development</th><th>Production</th></tr></thead><tbody>
+<tr><td><strong>Source Code</strong></td><td>Volume mounted</td><td>Copied during build</td></tr>
+<tr><td><strong>Building</strong></td><td>Manual</td><td>Automatic during image build</td></tr>
+<tr><td><strong>Operation</strong></td><td>Manual start/stop</td><td><strong>Continuous background operation</strong></td></tr>
+<tr><td><strong>Updates</strong></td><td>Edit files directly</td><td>Rebuild image</td></tr>
+<tr><td><strong>Use Case</strong></td><td>Development &amp; testing</td><td>Deployment &amp; autonomous operation</td></tr>
+</tbody></table>
+</div>
+<p><strong>Important:</strong> Production deployment runs continuously in the background and will automatically restart if it crashes, unless manually stopped.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-the-deployment-image"><a class="header" href="#building-the-deployment-image">Building the Deployment Image</a></h1>
+<h2 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h2>
+<ul>
+<li>Docker and Docker Compose installed</li>
+<li>NVIDIA Container Toolkit (for GPU support)</li>
+<li>Sufficient disk space (~8-10 GB)</li>
+</ul>
+<h2 id="build-the-image"><a class="header" href="#build-the-image">Build the Image</a></h2>
+<h3 id="using-build-script-recommended"><a class="header" href="#using-build-script-recommended">Using Build Script (Recommended)</a></h3>
+<pre><code class="language-bash">cd docker/
+./build.sh
+</code></pre>
+<h3 id="manual-build"><a class="header" href="#manual-build">Manual Build</a></h3>
+<pre><code class="language-bash">cd docker/
+docker-compose build rover-deploy
+</code></pre>
+<h2 id="what-happens-during-build"><a class="header" href="#what-happens-during-build">What Happens During Build</a></h2>
+<ol>
+<li><strong>Base Environment</strong> - L4T image, ROS 2 Humble, PyTorch</li>
+<li><strong>ZED SDK</strong> - Camera support and dependencies</li>
+<li><strong>Source Integration</strong> - Copies <code>../src</code> and runs <code>colcon build</code></li>
+<li><strong>Production Setup</strong> - Configures entrypoint and environment</li>
+</ol>
+<h2 id="build-output"><a class="header" href="#build-output">Build Output</a></h2>
+<p>After successful build:</p>
+<pre><code class="language-bash">✅ Rover deployment image built successfully!
+
+To run the deployment container:
+  docker-compose up rover-deploy
+
+To run in detached mode (background):
+  docker-compose up -d rover-deploy
+</code></pre>
+<p>The deployment image is now ready to run continuously in the background.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="running-in-production"><a class="header" href="#running-in-production">Running in Production</a></h1>
+<h2 id="start-production-deployment"><a class="header" href="#start-production-deployment">Start Production Deployment</a></h2>
+<p><strong>Basic deployment (runs continuously in background):</strong></p>
+<pre><code class="language-bash">cd docker/
+docker-compose up -d rover-deploy
+</code></pre>
+<p><strong>The production container will:</strong></p>
+<ul>
+<li>Start immediately and run continuously in the background</li>
+<li>Automatically restart if it crashes (<code>restart: unless-stopped</code>)</li>
+<li>Only stop when manually commanded</li>
+</ul>
+<h2 id="startup-modes"><a class="header" href="#startup-modes">Startup Modes</a></h2>
+<p><strong>Default (autostart teleop):</strong></p>
+<pre><code class="language-bash">docker-compose up -d rover-deploy
+</code></pre>
+<p><strong>Custom startup:</strong></p>
+<pre><code class="language-bash"># Standard bringup (no teleop)
+docker-compose run --rm rover-deploy bringup
+
+# Interactive shell
+docker-compose run --rm rover-deploy bash
+</code></pre>
+<h2 id="managing-the-deployment"><a class="header" href="#managing-the-deployment">Managing the Deployment</a></h2>
+<p><strong>View logs:</strong></p>
+<pre><code class="language-bash">docker-compose logs -f rover-deploy
+</code></pre>
+<p><strong>Check status:</strong></p>
+<pre><code class="language-bash">docker-compose ps rover-deploy
+</code></pre>
+<p><strong>Stop the deployment:</strong></p>
+<pre><code class="language-bash">docker-compose down rover-deploy
+</code></pre>
+<p><strong>Restart:</strong></p>
+<pre><code class="language-bash">docker-compose restart rover-deploy
+</code></pre>
+<p><strong>Access running container:</strong></p>
+<pre><code class="language-bash">docker-compose exec rover-deploy bash
+</code></pre>
+<h2 id="updating-deployment"><a class="header" href="#updating-deployment">Updating Deployment</a></h2>
+<p>To deploy new code:</p>
+<pre><code class="language-bash">./build.sh
+docker-compose down rover-deploy
+docker-compose up -d rover-deploy
+</code></pre>
+<h2 id="background-operation"><a class="header" href="#background-operation">Background Operation</a></h2>
+<p><strong>Important:</strong> The production deployment is designed to run continuously in the background. It will:</p>
+<ul>
+<li>Start automatically when the system boots (if configured)</li>
+<li>Run unattended without user interaction</li>
+<li>Automatically restart if the rover software crashes</li>
+<li>Continue running until explicitly stopped</li>
+</ul>
+<p>This makes it suitable for autonomous operations, competitions, and field deployments where the rover needs to operate reliably without manual intervention.</p>
 
                     </main>
 
@@ -325,6 +497,7 @@ ros2 launch gorm_teleop teleop.launch.py
             });
         });
         </script>
+
 
     </div>
     </body>
