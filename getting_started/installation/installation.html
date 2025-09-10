@@ -178,7 +178,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
-<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover.</p>
+<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover. This is mainly in the context of reinstalling the software on the rover itself after a fresh OS installation, and is not necessary for development on your own machine.</p>
 <h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
 <ul>
 <li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
@@ -199,7 +199,7 @@ sudo dkms install -m xpad -v 0.4
 <ol>
 <li>
 <p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
-<pre><code class="language-bash">ssh gorm@192.168.0.2 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
+<pre><code class="language-bash">ssh gorm@192.168.0.100 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
 </code></pre>
 <p>The default password is <code>gorm</code>.</p>
 </li>
@@ -210,9 +210,9 @@ sudo dkms install -m xpad -v 0.4
 </code></pre>
 </li>
 <li>
-<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and build the Docker images.</p>
+<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and start the main rover service in development mode (this will build images and mount the source code).</p>
 <pre><code class="language-bash">cd docker
-./run.sh
+./run.sh rover --dev
 </code></pre>
 <blockquote>
 <p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>

@@ -194,7 +194,7 @@
 </ul>
 <!-- - [**Examples**](./getting_started/examples/examples.md): Provides examples to help you get started with the AAU Rover Software. -->
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
-<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover.</p>
+<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover. This is mainly in the context of reinstalling the software on the rover itself after a fresh OS installation, and is not necessary for development on your own machine.</p>
 <h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
 <ul>
 <li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
@@ -215,7 +215,7 @@ sudo dkms install -m xpad -v 0.4
 <ol>
 <li>
 <p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
-<pre><code class="language-bash">ssh gorm@192.168.0.2 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
+<pre><code class="language-bash">ssh gorm@192.168.0.100 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
 </code></pre>
 <p>The default password is <code>gorm</code>.</p>
 </li>
@@ -226,9 +226,9 @@ sudo dkms install -m xpad -v 0.4
 </code></pre>
 </li>
 <li>
-<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and build the Docker images.</p>
+<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and start the main rover service in development mode (this will build images and mount the source code).</p>
 <pre><code class="language-bash">cd docker
-./run.sh
+./run.sh rover --dev
 </code></pre>
 <blockquote>
 <p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="getting_started/installation/../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>
@@ -252,37 +252,63 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 <p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="getting_started/launching/../../deployment/overview.html">Deployment Guide</a>.</p>
 <h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
 <ol>
-<li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
+<li>
+<p><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software (on the rover) is located.</p>
 <pre><code class="language-bash">cd /workspace/rover-software/docker
 </code></pre>
 </li>
-<li><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software and attach to it.
-<pre><code class="language-bash">./run.sh
-./attach.sh
+<li>
+<p><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software in development mode and attach to it.</p>
+<pre><code class="language-bash">./run.sh rover --dev
+
+# Attach to the running Docker container
+docker exec -it rover bash
 </code></pre>
 </li>
-<li><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.
+<li>
+<p><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.</p>
 <pre><code class="language-bash">colcon build
 source install/setup.bash
 </code></pre>
 </li>
-<li><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.
+<li>
+<p><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.</p>
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
+</code></pre>
+</li>
+<li>
+<p><strong>(Optional) Developing and changing the code</strong>: You can make changes to the code in the <code>src</code> directory on the host machine (outside the container on the Jetson Orin). The changes will be reflected inside the container because the source code is mounted as a volume. After making changes, you can rebuild the packages inside the container:</p>
+<pre><code class="language-bash">colcon build
+source install/setup.bash
+ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
 </li>
 </ol>
 <blockquote>
-<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, use <code>docker-compose up -d rover-deploy</code>. See the <a href="getting_started/launching/../../deployment/production.html">Production Deployment Guide</a> for details.</p>
+<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).</p>
 </blockquote>
-<h2 id="launching-the-gorm-rover-1"><a class="header" href="#launching-the-gorm-rover-1">Launching the GORM Rover</a></h2>
-<p><strong>Full system bringup:</strong></p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
+<ol>
+<li><strong>Run the Production Deployment</strong>: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
+<pre><code class="language-bash">./run.sh rover --prod
+# or with docker-compose:
+docker-compose up -d rover-deploy
 </code></pre>
-<p><strong>Teleop mode (manual control):</strong></p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
-<p><strong>Individual components:</strong></p>
-<pre><code class="language-bash"># Motors only
+</li>
+</ol>
+<!-- ## Launching the GORM Rover
+**Full system bringup:**
+```bash
+ros2 launch gorm_bringup bringup.launch.py
+```
+
+**Teleop mode (manual control):**
+```bash
+ros2 launch gorm_bringup bringup_teleop.launch.py
+```
+
+**Individual components:**
+```bash
+# Motors only
 ros2 launch gorm_base_control motor_driver.launch.py
 
 # Cameras only  
@@ -290,6 +316,18 @@ ros2 launch gorm_sensors cameras.launch.py
 
 # Joystick control only
 ros2 launch gorm_teleop teleop.launch.py
+``` -->
+<h2 id="useful-docker-inspection-commands"><a class="header" href="#useful-docker-inspection-commands">Useful docker inspection commands</a></h2>
+<pre><code>```bash
+# List running containers
+docker ps
+# List all containers (including stopped)
+docker ps -a
+# View logs of a specific container
+docker logs -f &lt;container_name_or_id&gt;
+# Access a running container's shell
+docker exec -it &lt;container_name_or_id&gt; bash
+```
 </code></pre>
 <h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
 <ul>
@@ -308,16 +346,19 @@ ros2 launch gorm_teleop teleop.launch.py
 </ul>
 <h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
 <ul>
-<li>Source code copied and pre-built during image creation</li>
+<li>ROS2 Source code copied and pre-built during image creation</li>
 <li><strong>Runs continuously in the background</strong> with automatic restarts</li>
-<li>Optimized for autonomous operation</li>
 </ul>
 <h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>Dockerfile.deploy</code></td><td>Production Dockerfile with pre-built workspace</td></tr>
-<tr><td><code>entrypoint.deploy.sh</code></td><td>Production entrypoint with startup modes</td></tr>
-<tr><td><code>build.sh</code></td><td>Build script for deployment image</td></tr>
-<tr><td><code>docker-compose.yaml</code></td><td>Both development and production services</td></tr>
+<tr><td><code>run.sh</code></td><td>The main script for starting services in different modes (e.g., <code>rover --dev</code>, <code>rover --prod</code>).</td></tr>
+<tr><td><code>docker-compose.yaml</code></td><td>Defines all services, e.g. <code>rover</code>, <code>rover-deploy</code>, <code>cameras</code>, etc.</td></tr>
+<tr><td><code>Dockerfile</code></td><td>Defines the multi-stage build environment for both development and production.</td></tr>
+<tr><td><code>build.sh</code></td><td>Script to build the production Docker image.</td></tr>
+<tr><td><code>stop.sh</code></td><td>A simple script to stop all running services defined in <code>docker-compose.yaml</code>.</td></tr>
+<tr><td><code>attach.sh</code></td><td>Helper script to quickly attach to the main <code>rover</code> container.</td></tr>
+<tr><td><code>entrypoint.sh</code></td><td>The entrypoint for the development container.</td></tr>
+<tr><td><code>entrypoint.deploy.sh</code></td><td>The entrypoint for the production container, handling startup logic.</td></tr>
 </tbody></table>
 </div>
 <h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
@@ -326,7 +367,9 @@ cd docker/
 ./build.sh
 
 # Deploy (runs in background continuously)
-docker-compose up -d rover-deploy
+./run.sh rover --prod
+# or using docker compose directly:
+# docker compose -f docker/docker-compose.yaml up -d rover-deploy
 </code></pre>
 <p>The production deployment will run continuously in the background unless manually stopped.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development-vs-production"><a class="header" href="#development-vs-production">Development vs Production</a></h1>
@@ -339,8 +382,10 @@ docker-compose up -d rover-deploy
 <li>Code changes immediately available</li>
 </ul>
 <p><strong>Workflow:</strong></p>
-<pre><code class="language-bash">docker-compose up -d rover
-docker-compose exec rover bash
+<pre><code class="language-bash">./run.sh rover --dev
+# or attach to the running container:
+docker exec -it rover bash
+# inside the container:
 colcon build &amp;&amp; source install/setup.bash
 ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
@@ -354,7 +399,9 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 </ul>
 <p><strong>Workflow:</strong></p>
 <pre><code class="language-bash">./build.sh
-docker-compose up -d rover-deploy  # Runs in background continuously
+./run.sh rover --prod  # starts the production deploy image in background
+# or using docker compose directly:
+# docker compose -f docker/docker-compose.yaml up -d rover-deploy
 </code></pre>
 <h2 id="key-differences"><a class="header" href="#key-differences">Key Differences</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Development</th><th>Production</th></tr></thead><tbody>
@@ -366,94 +413,6 @@ docker-compose up -d rover-deploy  # Runs in background continuously
 </tbody></table>
 </div>
 <p><strong>Important:</strong> Production deployment runs continuously in the background and will automatically restart if it crashes, unless manually stopped.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="building-the-deployment-image"><a class="header" href="#building-the-deployment-image">Building the Deployment Image</a></h1>
-<h2 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h2>
-<ul>
-<li>Docker and Docker Compose installed</li>
-<li>NVIDIA Container Toolkit (for GPU support)</li>
-<li>Sufficient disk space (~8-10 GB)</li>
-</ul>
-<h2 id="build-the-image"><a class="header" href="#build-the-image">Build the Image</a></h2>
-<h3 id="using-build-script-recommended"><a class="header" href="#using-build-script-recommended">Using Build Script (Recommended)</a></h3>
-<pre><code class="language-bash">cd docker/
-./build.sh
-</code></pre>
-<h3 id="manual-build"><a class="header" href="#manual-build">Manual Build</a></h3>
-<pre><code class="language-bash">cd docker/
-docker-compose build rover-deploy
-</code></pre>
-<h2 id="what-happens-during-build"><a class="header" href="#what-happens-during-build">What Happens During Build</a></h2>
-<ol>
-<li><strong>Base Environment</strong> - L4T image, ROS 2 Humble, PyTorch</li>
-<li><strong>ZED SDK</strong> - Camera support and dependencies</li>
-<li><strong>Source Integration</strong> - Copies <code>../src</code> and runs <code>colcon build</code></li>
-<li><strong>Production Setup</strong> - Configures entrypoint and environment</li>
-</ol>
-<h2 id="build-output"><a class="header" href="#build-output">Build Output</a></h2>
-<p>After successful build:</p>
-<pre><code class="language-bash">✅ Rover deployment image built successfully!
-
-To run the deployment container:
-  docker-compose up rover-deploy
-
-To run in detached mode (background):
-  docker-compose up -d rover-deploy
-</code></pre>
-<p>The deployment image is now ready to run continuously in the background.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="running-in-production"><a class="header" href="#running-in-production">Running in Production</a></h1>
-<h2 id="start-production-deployment"><a class="header" href="#start-production-deployment">Start Production Deployment</a></h2>
-<p><strong>Basic deployment (runs continuously in background):</strong></p>
-<pre><code class="language-bash">cd docker/
-docker-compose up -d rover-deploy
-</code></pre>
-<p><strong>The production container will:</strong></p>
-<ul>
-<li>Start immediately and run continuously in the background</li>
-<li>Automatically restart if it crashes (<code>restart: unless-stopped</code>)</li>
-<li>Only stop when manually commanded</li>
-</ul>
-<h2 id="startup-modes"><a class="header" href="#startup-modes">Startup Modes</a></h2>
-<p><strong>Default (autostart teleop):</strong></p>
-<pre><code class="language-bash">docker-compose up -d rover-deploy
-</code></pre>
-<p><strong>Custom startup:</strong></p>
-<pre><code class="language-bash"># Standard bringup (no teleop)
-docker-compose run --rm rover-deploy bringup
-
-# Interactive shell
-docker-compose run --rm rover-deploy bash
-</code></pre>
-<h2 id="managing-the-deployment"><a class="header" href="#managing-the-deployment">Managing the Deployment</a></h2>
-<p><strong>View logs:</strong></p>
-<pre><code class="language-bash">docker-compose logs -f rover-deploy
-</code></pre>
-<p><strong>Check status:</strong></p>
-<pre><code class="language-bash">docker-compose ps rover-deploy
-</code></pre>
-<p><strong>Stop the deployment:</strong></p>
-<pre><code class="language-bash">docker-compose down rover-deploy
-</code></pre>
-<p><strong>Restart:</strong></p>
-<pre><code class="language-bash">docker-compose restart rover-deploy
-</code></pre>
-<p><strong>Access running container:</strong></p>
-<pre><code class="language-bash">docker-compose exec rover-deploy bash
-</code></pre>
-<h2 id="updating-deployment"><a class="header" href="#updating-deployment">Updating Deployment</a></h2>
-<p>To deploy new code:</p>
-<pre><code class="language-bash">./build.sh
-docker-compose down rover-deploy
-docker-compose up -d rover-deploy
-</code></pre>
-<h2 id="background-operation"><a class="header" href="#background-operation">Background Operation</a></h2>
-<p><strong>Important:</strong> The production deployment is designed to run continuously in the background. It will:</p>
-<ul>
-<li>Start automatically when the system boots (if configured)</li>
-<li>Run unattended without user interaction</li>
-<li>Automatically restart if the rover software crashes</li>
-<li>Continue running until explicitly stopped</li>
-</ul>
-<p>This makes it suitable for autonomous operations, competitions, and field deployments where the rover needs to operate reliably without manual intervention.</p>
 
                     </main>
 

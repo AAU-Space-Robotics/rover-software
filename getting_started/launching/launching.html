@@ -181,37 +181,63 @@
 <p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="../../deployment/overview.html">Deployment Guide</a>.</p>
 <h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
 <ol>
-<li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software is located.
+<li>
+<p><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software (on the rover) is located.</p>
 <pre><code class="language-bash">cd /workspace/rover-software/docker
 </code></pre>
 </li>
-<li><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software and attach to it.
-<pre><code class="language-bash">./run.sh
-./attach.sh
+<li>
+<p><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software in development mode and attach to it.</p>
+<pre><code class="language-bash">./run.sh rover --dev
+
+# Attach to the running Docker container
+docker exec -it rover bash
 </code></pre>
 </li>
-<li><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.
+<li>
+<p><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.</p>
 <pre><code class="language-bash">colcon build
 source install/setup.bash
 </code></pre>
 </li>
-<li><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.
+<li>
+<p><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.</p>
 <pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
+</code></pre>
+</li>
+<li>
+<p><strong>(Optional) Developing and changing the code</strong>: You can make changes to the code in the <code>src</code> directory on the host machine (outside the container on the Jetson Orin). The changes will be reflected inside the container because the source code is mounted as a volume. After making changes, you can rebuild the packages inside the container:</p>
+<pre><code class="language-bash">colcon build
+source install/setup.bash
+ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
 </li>
 </ol>
 <blockquote>
-<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, use <code>docker-compose up -d rover-deploy</code>. See the <a href="../../deployment/production.html">Production Deployment Guide</a> for details.</p>
+<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).</p>
 </blockquote>
-<h2 id="launching-the-gorm-rover-1"><a class="header" href="#launching-the-gorm-rover-1">Launching the GORM Rover</a></h2>
-<p><strong>Full system bringup:</strong></p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup.launch.py
+<ol>
+<li><strong>Run the Production Deployment</strong>: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
+<pre><code class="language-bash">./run.sh rover --prod
+# or with docker-compose:
+docker-compose up -d rover-deploy
 </code></pre>
-<p><strong>Teleop mode (manual control):</strong></p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
-<p><strong>Individual components:</strong></p>
-<pre><code class="language-bash"># Motors only
+</li>
+</ol>
+<!-- ## Launching the GORM Rover
+**Full system bringup:**
+```bash
+ros2 launch gorm_bringup bringup.launch.py
+```
+
+**Teleop mode (manual control):**
+```bash
+ros2 launch gorm_bringup bringup_teleop.launch.py
+```
+
+**Individual components:**
+```bash
+# Motors only
 ros2 launch gorm_base_control motor_driver.launch.py
 
 # Cameras only  
@@ -219,6 +245,18 @@ ros2 launch gorm_sensors cameras.launch.py
 
 # Joystick control only
 ros2 launch gorm_teleop teleop.launch.py
+``` -->
+<h2 id="useful-docker-inspection-commands"><a class="header" href="#useful-docker-inspection-commands">Useful docker inspection commands</a></h2>
+<pre><code>```bash
+# List running containers
+docker ps
+# List all containers (including stopped)
+docker ps -a
+# View logs of a specific container
+docker logs -f &lt;container_name_or_id&gt;
+# Access a running container's shell
+docker exec -it &lt;container_name_or_id&gt; bash
+```
 </code></pre>
 <h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
 <ul>

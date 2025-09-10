@@ -187,8 +187,10 @@
 <li>Code changes immediately available</li>
 </ul>
 <p><strong>Workflow:</strong></p>
-<pre><code class="language-bash">docker-compose up -d rover
-docker-compose exec rover bash
+<pre><code class="language-bash">./run.sh rover --dev
+# or attach to the running container:
+docker exec -it rover bash
+# inside the container:
 colcon build &amp;&amp; source install/setup.bash
 ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
@@ -202,7 +204,9 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 </ul>
 <p><strong>Workflow:</strong></p>
 <pre><code class="language-bash">./build.sh
-docker-compose up -d rover-deploy  # Runs in background continuously
+./run.sh rover --prod  # starts the production deploy image in background
+# or using docker compose directly:
+# docker compose -f docker/docker-compose.yaml up -d rover-deploy
 </code></pre>
 <h2 id="key-differences"><a class="header" href="#key-differences">Key Differences</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Development</th><th>Production</th></tr></thead><tbody>
@@ -223,9 +227,6 @@ docker-compose up -d rover-deploy  # Runs in background continuously
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../deployment/building.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -237,9 +238,6 @@ docker-compose up -d rover-deploy  # Runs in background continuously
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../deployment/building.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

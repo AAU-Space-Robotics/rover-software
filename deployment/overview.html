@@ -187,16 +187,19 @@
 </ul>
 <h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
 <ul>
-<li>Source code copied and pre-built during image creation</li>
+<li>ROS2 Source code copied and pre-built during image creation</li>
 <li><strong>Runs continuously in the background</strong> with automatic restarts</li>
-<li>Optimized for autonomous operation</li>
 </ul>
 <h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>Dockerfile.deploy</code></td><td>Production Dockerfile with pre-built workspace</td></tr>
-<tr><td><code>entrypoint.deploy.sh</code></td><td>Production entrypoint with startup modes</td></tr>
-<tr><td><code>build.sh</code></td><td>Build script for deployment image</td></tr>
-<tr><td><code>docker-compose.yaml</code></td><td>Both development and production services</td></tr>
+<tr><td><code>run.sh</code></td><td>The main script for starting services in different modes (e.g., <code>rover --dev</code>, <code>rover --prod</code>).</td></tr>
+<tr><td><code>docker-compose.yaml</code></td><td>Defines all services, e.g. <code>rover</code>, <code>rover-deploy</code>, <code>cameras</code>, etc.</td></tr>
+<tr><td><code>Dockerfile</code></td><td>Defines the multi-stage build environment for both development and production.</td></tr>
+<tr><td><code>build.sh</code></td><td>Script to build the production Docker image.</td></tr>
+<tr><td><code>stop.sh</code></td><td>A simple script to stop all running services defined in <code>docker-compose.yaml</code>.</td></tr>
+<tr><td><code>attach.sh</code></td><td>Helper script to quickly attach to the main <code>rover</code> container.</td></tr>
+<tr><td><code>entrypoint.sh</code></td><td>The entrypoint for the development container.</td></tr>
+<tr><td><code>entrypoint.deploy.sh</code></td><td>The entrypoint for the production container, handling startup logic.</td></tr>
 </tbody></table>
 </div>
 <h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
@@ -205,7 +208,9 @@ cd docker/
 ./build.sh
 
 # Deploy (runs in background continuously)
-docker-compose up -d rover-deploy
+./run.sh rover --prod
+# or using docker compose directly:
+# docker compose -f docker/docker-compose.yaml up -d rover-deploy
 </code></pre>
 <p>The production deployment will run continuously in the background unless manually stopped.</p>
 
