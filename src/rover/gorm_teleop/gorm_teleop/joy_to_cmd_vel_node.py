@@ -10,25 +10,32 @@ import numpy as np
 class JoyToVelNode(Node):
     def __init__(self):
         super().__init__('joy_to_vel_converter')
+
+        # Declare parameters for input and output topics
+        self.declare_parameter('joy_topic', '/joy/joy')
+        self.declare_parameter('twist_topic', '/joystick/cmd_vel')
+
+        joy_topic = self.get_parameter('joy_topic').get_parameter_value().string_value
+        twist_topic = self.get_parameter('twist_topic').get_parameter_value().string_value
         
         # Subscriber
         self.subscription = self.create_subscription(
             Joy,
-            '/joy/joy',
+            joy_topic,
             self.listener_callback,
             10)
         
         # Publisher
         self.publisher_ = self.create_publisher(
             Twist,
-            '/cmd_vel',
+            twist_topic,
             10)
         
         self.linear_vel = 0.0
         self.angular_vel = 0.0
         self.speed_multi = 1
 
-        self.get_logger().info("Joy to vel converter node started successfully")
+        self.get_logger().info(f"Joy to vel converter node started. Subscribing to '{joy_topic}' and publishing to '{twist_topic}'.")
 
     def listener_callback(self, msg):
 
