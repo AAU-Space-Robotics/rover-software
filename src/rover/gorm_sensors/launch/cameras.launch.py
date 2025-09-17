@@ -20,7 +20,7 @@ def generate_launch_description():
             'serial_number': '37915676',
             'camera_id': '0',
             'node_name': 'zed_tracking',
-            'grab_resolution': 'HD1080', # 'HD720',  # The native camera grab resolution. 'HD2K', 'HD1080', 'HD720', 'VGA', 'AUTO'
+            'grab_resolution': 'HD720', # 'HD720',  # The native camera grab resolution. 'HD2K', 'HD1080', 'HD720', 'VGA', 'AUTO'
             'gnss_fusion_enabled': 'false',  # Enable GNSS fusion
             'namespace': 'zed_tracking',  # Namespace for the camera node
             'initial_base_pose': '[0.28, 0.0, 0.225, 0.0, 0.0, 0.0]',  # Initial pose of the base frame with respect to the camera frame
