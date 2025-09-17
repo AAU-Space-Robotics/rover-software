@@ -2,15 +2,13 @@
 - [Overview](./introduction.md)
 
 # Getting Started
-- [Installation](<./getting_started/installation/installation.md>)
+- [Installation (OS Reinstall)](<./getting_started/installation/installation.md>)
 - [Launching](<./getting_started/launching/launching.md>)
 - [Examples](<./getting_started/examples/examples.md>)
 
 # Deployment
 - [Deployment Overview](<./deployment/overview.md>)
 - [Development vs Production](<./deployment/development-vs-production.md>)
-- [Building Deployment Image](<./deployment/building.md>)
-- [Running in Production](<./deployment/production.md>)
 
 # ROS2 Stack
 - [Navigation](<>)

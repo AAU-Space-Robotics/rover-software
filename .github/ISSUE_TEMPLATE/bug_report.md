@@ -7,32 +7,27 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+# Bug Report: [Short Description Here]
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Description
+<!-- Describe the bug in detail. Include what you expected to happen and what actually happened. -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Steps to Reproduce
+<!-- Provide a clear set of steps to reproduce the bug. -->
+1. Step 1
+2. Step 2
+3. Step 3
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Expected Behavior
+<!-- What you expected to happen -->
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Actual Behavior
+<!-- What actually happened -->
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+## Environment
+- OS: [e.g., Ubuntu 22.04]
+- Software Version: [e.g., ROS2 Humble, PyTorch 2.4]
+- Hardware: [e.g., Jetson Orin, Rover model]
 
-**Additional context**
-Add any other context about the problem here.
+## Additional Context
+<!-- Add any other context about the problem here (logs, screenshots, etc.) -->

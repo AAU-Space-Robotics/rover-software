@@ -7,14 +7,19 @@ assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+# Feature Request: [Short Description Here]
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Description
+<!-- Briefly describe the feature or improvement. Why is it needed? -->
+  
+## Proposed Solution
+<!-- Suggest how the feature could be implemented. Include possible approaches or options. -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Tasks
+- [ ] Task 1 (e.g., design interface or prototype)
+- [ ] Task 2 (e.g., implement core functionality)
+- [ ] Task 3 (e.g., testing/validation)
+- [ ] Task 4 (e.g., update documentation)
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Why
+<!-- Explain why this feature is important and the benefits it will bring -->

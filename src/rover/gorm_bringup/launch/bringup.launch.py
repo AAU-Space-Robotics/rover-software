@@ -37,7 +37,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    #ld.add_action(joy_node)
+    ld.add_action(joy_node)
     ld.add_action(joy_to_cmd_vel_node)
     ld.add_action(ackermann_node)
     ld.add_action(motor_driver_node)

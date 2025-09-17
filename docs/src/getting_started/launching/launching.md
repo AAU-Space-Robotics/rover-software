@@ -4,14 +4,16 @@ The GORM rover can be launched in two modes: **development mode** (for active de
 
 ## Quick Start with Docker (Development Mode)
 
-1. **Navigate to the Rover Software Directory**: Open a terminal and navigate to the directory where the rover software is located.
+1. **Navigate to the Rover Software Directory**: Open a terminal and navigate to the directory where the rover software (on the rover) is located.
     ```bash
     cd /workspace/rover-software/docker
     ```
-2. **Run the Docker Container and Attach to It**: Start the Docker container that contains the rover software and attach to it.
+2. **Run the Docker Container and Attach to It**: Start the Docker container that contains the rover software in development mode and attach to it.
     ```bash
-    ./run.sh
-    ./attach.sh
+    ./run.sh rover --dev
+
+    # Attach to the running Docker container
+    docker exec -it rover bash
     ```
 3. **Build the ROS2 Packages**: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.
     ```bash
@@ -23,9 +25,23 @@ The GORM rover can be launched in two modes: **development mode** (for active de
     ros2 launch gorm_bringup bringup_teleop.launch.py
     ```
 
-> **💡 Production Alternative**: For production deployment with automatic restart and pre-built packages, use `docker-compose up -d rover-deploy`. See the [Production Deployment Guide](../../deployment/production.md) for details.
+5. **(Optional) Developing and changing the code**: You can make changes to the code in the `src` directory on the host machine (outside the container on the Jetson Orin). The changes will be reflected inside the container because the source code is mounted as a volume. After making changes, you can rebuild the packages inside the container:
+    ```bash
+    colcon build
+    source install/setup.bash
+    ros2 launch gorm_bringup bringup_teleop.launch.py
+    ```
 
-## Launching the GORM Rover
+> **💡 Production Alternative**: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).
+
+1. **Run the Production Deployment**: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
+    ```bash
+    ./run.sh rover --prod
+    # or with docker-compose:
+    docker-compose up -d rover-deploy
+    ```
+
+<!-- ## Launching the GORM Rover
 **Full system bringup:**
 ```bash
 ros2 launch gorm_bringup bringup.launch.py
@@ -46,7 +62,19 @@ ros2 launch gorm_sensors cameras.launch.py
 
 # Joystick control only
 ros2 launch gorm_teleop teleop.launch.py
-```
+``` -->
+
+## Useful docker inspection commands
+    ```bash
+    # List running containers
+    docker ps
+    # List all containers (including stopped)
+    docker ps -a
+    # View logs of a specific container
+    docker logs -f <container_name_or_id>
+    # Access a running container's shell
+    docker exec -it <container_name_or_id> bash
+    ```
 
 ## Key Topics
 

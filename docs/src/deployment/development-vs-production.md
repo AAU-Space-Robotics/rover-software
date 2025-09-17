@@ -11,8 +11,10 @@
 
 **Workflow:**
 ```bash
-docker-compose up -d rover
-docker-compose exec rover bash
+./run.sh rover --dev
+# or attach to the running container:
+docker exec -it rover bash
+# inside the container:
 colcon build && source install/setup.bash
 ros2 launch gorm_bringup bringup_teleop.launch.py
 ```
@@ -29,7 +31,9 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 **Workflow:**
 ```bash
 ./build.sh
-docker-compose up -d rover-deploy  # Runs in background continuously
+./run.sh rover --prod  # starts the production deploy image in background
+# or using docker compose directly:
+# docker compose -f docker/docker-compose.yaml up -d rover-deploy
 ```
 
 ## Key Differences
