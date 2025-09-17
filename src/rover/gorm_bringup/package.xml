@@ -10,6 +10,7 @@
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>twist_mux</depend>
   <depend>gorm_web_interface</depend>
   <depend>gorm_sensors</depend>
 

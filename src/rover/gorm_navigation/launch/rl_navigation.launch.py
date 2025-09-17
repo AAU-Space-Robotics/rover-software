@@ -57,14 +57,7 @@ def generate_launch_description():
             'depth_image_width': 160,
             'max_depth_value': 4.0,
             'enable_triton': LaunchConfiguration('enable_triton'),
-        }],
-        # remappings=[
-        #     # Remap topics to match your robot's actual topic names
-        #     ('/goal_pose', '/goal_pose'),
-        #     ('/amcl_pose', '/amcl_pose'),
-        #     ('/odom', '/odom'),
-        #     ('/cmd_vel', '/cmd_vel'),
-        # ]
+        }]
     )
     
     return LaunchDescription([
