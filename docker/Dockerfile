@@ -186,7 +186,7 @@ RUN pip3 install tritonclient[all]
 ###         Install EXTRAS       ###
 #####################################
 
-RUN apt-get update && apt-get install -y ros-humble-rosbridge-server ros-humble-rmw-zenoh-cpp
+RUN apt-get update && apt-get install -y ros-humble-rosbridge-server ros-humble-rmw-zenoh-cpp ros-humble-twist-mux
 
 # Clean up
 RUN rm -rf /var/lib/apt/lists/*
