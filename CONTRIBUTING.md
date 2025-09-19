@@ -139,15 +139,6 @@ chore: update dependencies to latest stable versions
    # For ROS 2 packages
    colcon build --packages-select <package_name>
    colcon test --packages-select <package_name>
-   
-   # For Python code
-   python3 -m py_compile src/**/*.py
-   ```
-
-3. **Lint your code:**
-   ```bash
-   # ROS 2 packages have built-in linting via ament
-   colcon test --packages-select <package_name> --event-handlers console_direct+
    ```
 
 ### PR Requirements
