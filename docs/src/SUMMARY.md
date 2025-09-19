@@ -2,15 +2,14 @@
 - [Overview](./introduction.md)
 
 # Getting Started
-- [Installation (OS Reinstall)](<./getting_started/installation/installation.md>)
-- [Launching](<./getting_started/launching/launching.md>)
-- [Examples](<./getting_started/examples/examples.md>)
 
-# Deployment
-- [Deployment Overview](<./deployment/overview.md>)
-- [Development vs Production](<./deployment/development-vs-production.md>)
+- [Launching](<./getting_started/launching.md>)
+- [Development Setup](<./getting_started/development-setup.md>)
+- [Development vs Production](<./getting_started/development-vs-production.md>)
+<!-- - [Examples](<./getting_started/examples.md>) -->
 
 # ROS2 Stack
+- [Topics and Messages](./ros2-stack/topics-and-messages.md)
 - [Navigation](<>)
   - [Perception](<>)
   - [Planning](<>)
@@ -33,5 +32,13 @@
 <!-- # Development
 - [] -->
 # Contributing
-- [Contributing Guidelines](<>)
+- [Overview](./contributing/overview.md)
+- [Branching Strategy](./contributing/branching.md)
+- [Commit Guidelines](./contributing/commits.md)
+- [Pull Requests](./contributing/pull-requests.md)
+- [Code Style](./contributing/code-style.md)
 <!-- - [License](<>) -->
+
+# Advanced
+
+- [Installation (OS Reinstall)](<./advanced/installation.md>)

@@ -3,7 +3,7 @@ authors = ["abmoRobotics"]
 language = "en"
 multilingual = false
 src = "src"
-title = "AAU Rover Software Documentation"
+title = "GORM Rover Software Documentation"
 [preprocessor.katex]
 inline-delimiter = ["$", "$"]
 

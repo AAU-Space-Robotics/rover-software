@@ -46,4 +46,16 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 | **Updates** | Edit files directly | Rebuild image |
 | **Use Case** | Development & testing | Deployment & autonomous operation |
 
+## Deployment Files
+
+| File | Purpose |
+|------|---------|
+| `run.sh` | The main script for starting services in different modes (e.g., `rover --dev`, `rover --prod`). |
+| `docker-compose.yaml` | Defines all services, e.g. `rover`, `rover-deploy`, `cameras`, etc. |
+| `Dockerfile` | Defines the multi-stage build environment for both development and production. |
+| `build.sh` | Script to build the production Docker image. |
+| `stop.sh` | A simple script to stop all running services defined in `docker-compose.yaml`. |
+| `attach.sh` | Helper script to quickly attach to the main `rover` container. |
+| `entrypoint.sh` | The entrypoint for the containers. |
+
 **Important:** Production deployment runs continuously in the background and will automatically restart if it crashes, unless manually stopped.
