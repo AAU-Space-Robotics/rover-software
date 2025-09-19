@@ -21,8 +21,7 @@ The GORM rover software provides two deployment modes: **development** and **pro
 | `build.sh` | Script to build the production Docker image. |
 | `stop.sh` | A simple script to stop all running services defined in `docker-compose.yaml`. |
 | `attach.sh` | Helper script to quickly attach to the main `rover` container. |
-| `entrypoint.sh` | The entrypoint for the development container. |
-| `entrypoint.deploy.sh` | The entrypoint for the production container, handling startup logic. |
+| `entrypoint.sh` | The entrypoint for the containers. |
 
 ## Quick Start
 
