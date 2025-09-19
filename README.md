@@ -67,6 +67,10 @@ Confirm the correct username and password for your hardware image before connect
 
 Simulation assets and detailed instructions are not available yet — coming soon. Check the documentation site for updates and the `docs/` directory later for example scenarios and launch files.
 
+## Contributing
+
+Please see our [Contributing Guide](CONTRIBUTING.md) for details on our development process, branching strategy, and code style.
+
 ---
 
 For more detailed guides, see the `docs/` directory or visit the documentation site linked above.
