@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Launching - AAU Rover Software Documentation</title>
+        <title>Overview - GORM Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon.svg">
-        <link rel="shortcut icon" href="../../favicon.png">
-        <link rel="stylesheet" href="../../css/variables.css">
-        <link rel="stylesheet" href="../../css/general.css">
-        <link rel="stylesheet" href="../../css/chrome.css">
-        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -35,13 +35,13 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -108,7 +108,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -140,10 +140,10 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -177,103 +177,45 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
-<p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="../../deployment/overview.html">Deployment Guide</a>.</p>
-<h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
-<ol>
-<li>
-<p><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software (on the rover) is located.</p>
-<pre><code class="language-bash">cd /workspace/rover-software/docker
-</code></pre>
-</li>
-<li>
-<p><strong>Run the Docker Container and Attach to It</strong>: Start the Docker container that contains the rover software in development mode and attach to it.</p>
-<pre><code class="language-bash">./run.sh rover --dev
-
-# Attach to the running Docker container
-docker exec -it rover bash
-</code></pre>
-</li>
-<li>
-<p><strong>Build the ROS2 Packages</strong>: Inside the Docker container, build the ROS2 packages to ensure everything is set up correctly.</p>
-<pre><code class="language-bash">colcon build
-source install/setup.bash
-</code></pre>
-</li>
-<li>
-<p><strong>Launch the Rover Software</strong>: Finally, launch the rover software using the provided launch file.</p>
-<pre><code class="language-bash">ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
-</li>
-<li>
-<p><strong>(Optional) Developing and changing the code</strong>: You can make changes to the code in the <code>src</code> directory on the host machine (outside the container on the Jetson Orin). The changes will be reflected inside the container because the source code is mounted as a volume. After making changes, you can rebuild the packages inside the container:</p>
-<pre><code class="language-bash">colcon build
-source install/setup.bash
-ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
-</li>
-</ol>
-<blockquote>
-<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).</p>
-</blockquote>
-<ol>
-<li><strong>Run the Production Deployment</strong>: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
-<pre><code class="language-bash">./run.sh rover --prod
-# or with docker-compose:
-docker-compose up -d rover-deploy
-</code></pre>
-</li>
-</ol>
-<!-- ## Launching the GORM Rover
-**Full system bringup:**
-```bash
-ros2 launch gorm_bringup bringup.launch.py
-```
-
-**Teleop mode (manual control):**
-```bash
-ros2 launch gorm_bringup bringup_teleop.launch.py
-```
-
-**Individual components:**
-```bash
-# Motors only
-ros2 launch gorm_base_control motor_driver.launch.py
-
-# Cameras only  
-ros2 launch gorm_sensors cameras.launch.py
-
-# Joystick control only
-ros2 launch gorm_teleop teleop.launch.py
-``` -->
-<h2 id="useful-docker-inspection-commands"><a class="header" href="#useful-docker-inspection-commands">Useful docker inspection commands</a></h2>
-<pre><code>```bash
-# List running containers
-docker ps
-# List all containers (including stopped)
-docker ps -a
-# View logs of a specific container
-docker logs -f &lt;container_name_or_id&gt;
-# Access a running container's shell
-docker exec -it &lt;container_name_or_id&gt; bash
-```
-</code></pre>
-<h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
+                        <h1 id="contributing-overview"><a class="header" href="#contributing-overview">Contributing Overview</a></h1>
+<p>Welcome to the GORM rover project! This guide will help you understand our development practices and contribution process to ensure smooth collaboration.</p>
+<h2 id="-important-rules"><a class="header" href="#-important-rules">🚨 Important Rules</a></h2>
+<p><strong>NEVER commit directly to <code>main</code> or <code>dev</code> branches.</strong> All changes must go through the Pull Request process.</p>
+<h2 id="key-points-for-contributors"><a class="header" href="#key-points-for-contributors">Key Points for Contributors</a></h2>
 <ul>
-<li><code>/cmd_vel</code> - Velocity commands (geometry_msgs/Twist)</li>
-<li><code>/odom</code> - Odometry feedback (nav_msgs/Odometry)</li>
-<li><code>/joy</code> - Joystick input</li>
+<li><strong>System releases</strong> use Git tags with format <code>vMAJOR.MINOR.PATCH</code> (e.g., <code>v1.0.0</code>)</li>
+<li><strong>ROS 2 packages</strong> version independently using <code>MAJOR.MINOR.PATCH</code> format in their <code>package.xml</code></li>
+<li>All changes must be made through Pull Requests</li>
+<li>Follow our branching strategy and commit conventions</li>
+<li>Test your changes before submitting PRs</li>
+<li>Update documentation as needed</li>
 </ul>
+<h2 id="version-updates"><a class="header" href="#version-updates">Version Updates</a></h2>
+<p>When making changes that affect versioning:</p>
+<ol>
+<li><strong>Breaking changes</strong>: Increment MAJOR version</li>
+<li><strong>New features</strong>: Increment MINOR version</li>
+<li><strong>Bug fixes</strong>: Increment PATCH version</li>
+</ol>
+<p>Always update <code>package.xml</code> when changing ROS 2 package versions.</p>
+<h2 id="getting-help"><a class="header" href="#getting-help">Getting Help</a></h2>
+<ul>
+<li><strong>Issues:</strong> Use GitHub Issues for bugs and feature requests</li>
+<li><strong>Discussions:</strong> Use GitHub Discussions for questions and ideas</li>
+<li><strong>Maintainers:</strong> Tag <code>@AAU-Space-Robotics</code> maintainers for urgent matters</li>
+</ul>
+<hr />
+<p><strong>Remember:</strong> Never commit directly to <code>main</code> or <code>dev</code>. Always use Pull Requests for code changes.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../getting_started/installation/installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../ros2-stack/topics-and-messages.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../getting_started/examples/examples.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../contributing/branching.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -283,11 +225,11 @@ docker exec -it &lt;container_name_or_id&gt; bash
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../getting_started/installation/installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../ros2-stack/topics-and-messages.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../getting_started/examples/examples.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../contributing/branching.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -302,13 +244,13 @@ docker exec -it &lt;container_name_or_id&gt; bash
         </script>
 
 
-        <script src="../../elasticlunr.min.js"></script>
-        <script src="../../mark.min.js"></script>
-        <script src="../../searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../../clipboard.min.js"></script>
-        <script src="../../highlight.js"></script>
-        <script src="../../book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 

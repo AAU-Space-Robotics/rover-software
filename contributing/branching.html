@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Development vs Production - AAU Rover Software Documentation</title>
+        <title>Branching Strategy - GORM Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -140,7 +140,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -177,56 +177,60 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="development-vs-production"><a class="header" href="#development-vs-production">Development vs Production</a></h1>
-<h2 id="development-setup-rover-service"><a class="header" href="#development-setup-rover-service">Development Setup (<code>rover</code> service)</a></h2>
-<p><strong>Use for:</strong> Active development, debugging, testing</p>
+                        <h1 id="branching-strategy"><a class="header" href="#branching-strategy">Branching Strategy</a></h1>
+<p>We follow a structured branching approach to maintain code quality and enable parallel development:</p>
+<h2 id="branch-types"><a class="header" href="#branch-types">Branch Types</a></h2>
 <ul>
-<li>Source code mounted as volumes (<code>../src:/home/workspace/src</code>)</li>
-<li>Manual building required (<code>colcon build</code>)</li>
-<li>Interactive environment</li>
-<li>Code changes immediately available</li>
+<li><strong><code>main</code></strong> - Production-ready code. Protected branch.</li>
+<li><strong><code>dev</code></strong> - Integration branch for features. Protected branch.</li>
+<li><strong><code>feature/</code></strong> - New features and enhancements</li>
+<li><strong><code>bugfix/</code></strong> - Bug fixes for existing functionality</li>
+<li><strong><code>hotfix/</code></strong> - Critical fixes that need immediate deployment</li>
+<li><strong><code>release/</code></strong> - Release preparation and versioning</li>
 </ul>
-<p><strong>Workflow:</strong></p>
-<pre><code class="language-bash">./run.sh rover --dev
-# or attach to the running container:
-docker exec -it rover bash
-# inside the container:
-colcon build &amp;&amp; source install/setup.bash
-ros2 launch gorm_bringup bringup_teleop.launch.py
+<h2 id="branch-naming-convention"><a class="header" href="#branch-naming-convention">Branch Naming Convention</a></h2>
+<p>Use descriptive names with the appropriate prefix:</p>
+<pre><code>feature/add-navigation-controller
+feature/improve-motor-control
+bugfix/fix-odometry-calculation
+bugfix/resolve-docker-build-issue
+hotfix/critical-localization-failure
+release/v1.2.0
 </code></pre>
-<h2 id="production-setup-rover-deploy-service"><a class="header" href="#production-setup-rover-deploy-service">Production Setup (<code>rover-deploy</code> service)</a></h2>
-<p><strong>Use for:</strong> Autonomous operation, field deployment, competitions</p>
-<ul>
-<li>Source code copied during image build</li>
-<li>Pre-built workspace (no manual building needed)</li>
-<li><strong>Runs continuously in background</strong> with <code>restart: unless-stopped</code></li>
-<li>Production-ready and stable</li>
-</ul>
-<p><strong>Workflow:</strong></p>
-<pre><code class="language-bash">./build.sh
-./run.sh rover --prod  # starts the production deploy image in background
-# or using docker compose directly:
-# docker compose -f docker/docker-compose.yaml up -d rover-deploy
+<h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
+<ol>
+<li>
+<p><strong>Create feature branch from <code>dev</code>:</strong></p>
+<pre><code class="language-bash">git checkout dev
+git pull origin dev
+git checkout -b feature/your-feature-name
 </code></pre>
-<h2 id="key-differences"><a class="header" href="#key-differences">Key Differences</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Development</th><th>Production</th></tr></thead><tbody>
-<tr><td><strong>Source Code</strong></td><td>Volume mounted</td><td>Copied during build</td></tr>
-<tr><td><strong>Building</strong></td><td>Manual</td><td>Automatic during image build</td></tr>
-<tr><td><strong>Operation</strong></td><td>Manual start/stop</td><td><strong>Continuous background operation</strong></td></tr>
-<tr><td><strong>Updates</strong></td><td>Edit files directly</td><td>Rebuild image</td></tr>
-<tr><td><strong>Use Case</strong></td><td>Development &amp; testing</td><td>Deployment &amp; autonomous operation</td></tr>
-</tbody></table>
-</div>
-<p><strong>Important:</strong> Production deployment runs continuously in the background and will automatically restart if it crashes, unless manually stopped.</p>
+</li>
+<li>
+<p><strong>Work on your changes and commit regularly</strong></p>
+</li>
+<li>
+<p><strong>Push your branch and create a Pull Request to <code>dev</code></strong></p>
+</li>
+<li>
+<p><strong>After review and approval, merge to <code>dev</code></strong></p>
+</li>
+<li>
+<p><strong>For releases, create a release branch from <code>dev</code> and merge to <code>main</code></strong></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../deployment/overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../contributing/overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="../contributing/commits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -234,10 +238,13 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../deployment/overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../contributing/overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="../contributing/commits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

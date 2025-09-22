@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Deployment Overview - AAU Rover Software Documentation</title>
+        <title>Code Style - GORM Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -140,7 +140,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -177,52 +177,69 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="deployment-overview"><a class="header" href="#deployment-overview">Deployment Overview</a></h1>
-<p>The GORM rover software provides two deployment modes: <strong>development</strong> and <strong>production</strong>.</p>
-<h2 id="development-mode"><a class="header" href="#development-mode">Development Mode</a></h2>
+                        <h1 id="code-style-guidelines"><a class="header" href="#code-style-guidelines">Code Style Guidelines</a></h1>
+<h2 id="python-ros-2-packages"><a class="header" href="#python-ros-2-packages">Python (ROS 2 Packages)</a></h2>
 <ul>
-<li>Source code mounted as volumes for live editing</li>
-<li>Manual building inside container</li>
-<li>Interactive development and testing</li>
+<li>Follow <strong>PEP 8</strong> style guide</li>
+<li>Use <strong>type hints</strong> where appropriate</li>
+<li>Maximum line length: <strong>120 characters</strong></li>
+<li>Use <strong>docstrings</strong> for classes and functions</li>
+<li>Import order: standard library, third-party, local imports</li>
 </ul>
-<h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
-<ul>
-<li>ROS2 Source code copied and pre-built during image creation</li>
-<li><strong>Runs continuously in the background</strong> with automatic restarts</li>
-</ul>
-<h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>run.sh</code></td><td>The main script for starting services in different modes (e.g., <code>rover --dev</code>, <code>rover --prod</code>).</td></tr>
-<tr><td><code>docker-compose.yaml</code></td><td>Defines all services, e.g. <code>rover</code>, <code>rover-deploy</code>, <code>cameras</code>, etc.</td></tr>
-<tr><td><code>Dockerfile</code></td><td>Defines the multi-stage build environment for both development and production.</td></tr>
-<tr><td><code>build.sh</code></td><td>Script to build the production Docker image.</td></tr>
-<tr><td><code>stop.sh</code></td><td>A simple script to stop all running services defined in <code>docker-compose.yaml</code>.</td></tr>
-<tr><td><code>attach.sh</code></td><td>Helper script to quickly attach to the main <code>rover</code> container.</td></tr>
-<tr><td><code>entrypoint.sh</code></td><td>The entrypoint for the development container.</td></tr>
-<tr><td><code>entrypoint.deploy.sh</code></td><td>The entrypoint for the production container, handling startup logic.</td></tr>
-</tbody></table>
-</div>
-<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
-<pre><code class="language-bash"># Build production image
-cd docker/
-./build.sh
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+from typing import Optional
 
-# Deploy (runs in background continuously)
-./run.sh rover --prod
-# or using docker compose directly:
-# docker compose -f docker/docker-compose.yaml up -d rover-deploy
+import rclpy
+from rclpy.node import Node
+
+class MyNode(Node):
+    """Brief description of the node's purpose."""
+    
+    def __init__(self) -&gt; None:
+        super().__init__('my_node')
+        self.get_logger().info("Node initialized")
 </code></pre>
-<p>The production deployment will run continuously in the background unless manually stopped.</p>
+<h2 id="c"><a class="header" href="#c">C++</a></h2>
+<ul>
+<li>Follow <strong>Google C++ Style Guide</strong></li>
+<li>Use <strong>camelCase</strong> for variables and functions</li>
+<li>Use <strong>PascalCase</strong> for classes and structs</li>
+<li>Maximum line length: <strong>100 characters</strong></li>
+<li>Use meaningful variable names</li>
+</ul>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-cpp">#include &lt;rclcpp/rclcpp.hpp&gt;
+
+class MyNode : public rclcpp::Node
+{
+public:
+  MyNode() : Node("my_node")
+  {
+    RCLCPP_INFO(this-&gt;get_logger(), "Node initialized");
+  }
+
+private:
+  void processData();
+};
+</code></pre>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
+<ul>
+<li>Update <strong>README.md</strong> for significant changes</li>
+<li>Add <strong>docstrings/comments</strong> for complex logic</li>
+<li>Update <strong>package.xml</strong> descriptions when needed</li>
+<li>Include <strong>examples</strong> in documentation</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../getting_started/examples/examples.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../contributing/pull-requests.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../deployment/development-vs-production.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../advanced/installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -232,11 +249,11 @@ cd docker/
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../getting_started/examples/examples.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../contributing/pull-requests.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../deployment/development-vs-production.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../advanced/installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation (OS Reinstall) - AAU Rover Software Documentation</title>
+        <title>Development Setup - GORM Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,21 +12,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon.svg">
-        <link rel="shortcut icon" href="../../favicon.png">
-        <link rel="stylesheet" href="../../css/variables.css">
-        <link rel="stylesheet" href="../../css/general.css">
-        <link rel="stylesheet" href="../../css/chrome.css">
-        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -35,13 +35,13 @@
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -108,7 +108,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -140,10 +140,10 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
 
@@ -177,71 +177,84 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
-<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover. This is mainly in the context of reinstalling the software on the rover itself after a fresh OS installation, and is not necessary for development on your own machine.</p>
-<h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
-<ul>
-<li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
-<li><strong>Sensors</strong>: 2x Zed 2i Cameras,</li>
-</ul>
-<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
-<ol>
-<li><strong>Docker</strong></li>
-<li><strong>Docker Compose</strong></li>
-<li><strong>Nvidia Container Toolkit</strong></li>
-<li><strong>Resolve Joy Driver Issues</strong>: If you encounter issues with the joystick driver, you can resolve them by opening a terminal and running the following commands: see <a href="https://forums.developer.nvidia.com/t/logitech-f710-kernel-module-issues-jetpack-6/296904/21">Joy Driver Issues</a>.
-<pre><code class="language-bash">sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
-sudo dkms install -m xpad -v 0.4
-</code></pre>
-</li>
-</ol>
-<h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
+                        <h1 id="development-setup"><a class="header" href="#development-setup">Development Setup</a></h1>
+<h3 id="multi-developer-setup-orin-system"><a class="header" href="#multi-developer-setup-orin-system">Multi-Developer Setup (ORIN System)</a></h3>
+<p>When developing on the shared ORIN system (192.168.50.100) with multiple developers, follow these steps:</p>
 <ol>
 <li>
-<p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
-<pre><code class="language-bash">ssh gorm@192.168.0.100 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
-</code></pre>
-<p>The default password is <code>gorm</code>.</p>
-</li>
-<li>
-<p><strong>Clone the Repository</strong>: Clone the AAU Rover Software repository to the rover's computer.</p>
-<pre><code class="language-bash"> git clone https://github.com/aaU-Space-Robotics/rover-software/
- cd rover-software
+<p><strong>Create personal workspace and clone:</strong></p>
+<pre><code class="language-bash"># Replace 'abmo' with your initials/username
+mkdir -p ws/abmo_dev
+cd ws/abmo_dev
+git clone https://github.com/AAU-Space-Robotics/rover-software.git
+cd rover-software
 </code></pre>
 </li>
 <li>
-<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and start the main rover service in development mode (this will build images and mount the source code).</p>
+<p><strong>Configure Git locally for your identity:</strong></p>
+<pre><code class="language-bash">git config user.name "Your Name"
+git config user.email "your.email@example.com"
+</code></pre>
+</li>
+<li>
+<p><strong>SSH Agent Setup for ORIN (192.168.50.100):</strong></p>
+<p>Add to your SSH config (<code>~/.ssh/config</code>):</p>
+<pre><code> Host 192.168.50.100
+     HostName 192.168.50.100
+     User gorm
+     ForwardAgent yes
+     IdentityFile ~/.ssh/id_ed25519
+</code></pre>
+</li>
+<li>
+<p><strong>Setup SSH key evaluation:</strong></p>
+<p>Add to the bottom of your <code>~/.profile</code> and <code>~/.xprofile</code>:</p>
+<pre><code class="language-bash">eval $(keychain --eval --quiet id_ed25519)
+</code></pre>
+<p><em>create the files if they don't exist.</em></p>
+</li>
+<li>
+<p><strong>Development with Docker (Recommended):</strong></p>
 <pre><code class="language-bash">cd docker
 ./run.sh rover --dev
 </code></pre>
-<blockquote>
-<p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>
-</blockquote>
 </li>
 <li>
-<p><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.</p>
-<pre><code class="language-bash"># Attach to the running Docker container
-docker exec -it rover-software bash
+<p><strong>Native development:</strong></p>
+<pre><code class="language-bash"># Source ROS 2
+source /opt/ros/humble/setup.bash
 
-# Build the ROS2 packages inside the container
+# Build packages
 colcon build
 source install/setup.bash
-
-# Launch the rover software
-ros2 launch gorm_bringup bringup_teleop.launch.py
 </code></pre>
 </li>
 </ol>
+<h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
+<h3 id="ros-2-packages"><a class="header" href="#ros-2-packages">ROS 2 Packages</a></h3>
+<pre><code class="language-bash"># Build and test a specific package
+colcon build --packages-select gorm_control
+colcon test --packages-select gorm_control
+</code></pre>
+<h3 id="docker-testing"><a class="header" href="#docker-testing">Docker Testing</a></h3>
+<pre><code class="language-bash"># Test in development container
+cd docker
+./run.sh rover --dev
+
+# Test production build
+./build.sh
+./run.sh rover --prod
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../getting_started/launching.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../getting_started/launching/launching.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../getting_started/development-vs-production.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -251,11 +264,11 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../getting_started/launching.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../getting_started/launching/launching.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../getting_started/development-vs-production.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -270,13 +283,13 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
         </script>
 
 
-        <script src="../../elasticlunr.min.js"></script>
-        <script src="../../mark.min.js"></script>
-        <script src="../../searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../../clipboard.min.js"></script>
-        <script src="../../highlight.js"></script>
-        <script src="../../book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
 

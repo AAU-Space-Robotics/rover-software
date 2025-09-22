@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>AAU Rover Software Documentation</title>
+        <title>GORM Rover Software Documentation</title>
         <meta name="robots" content="noindex">
 
 
@@ -141,7 +141,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -178,78 +178,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <!-- This is the initial pre-release of this RL-suite. Please let me know if there is information missing by contacting me at abmoRobotics@gmail.com. -->
-<h1 id="aau-rover-software-overview"><a class="header" href="#aau-rover-software-overview">AAU Rover Software Overview</a></h1>
-<p>Welcome to the AAU Rover Software Overview, the rover consists of these main ROS 2 packages:</p>
+                        <p><img src="images/rover.jpg" alt="GORM Rover" /></p>
+<h1 id="gorm-rover-software-overview"><a class="header" href="#gorm-rover-software-overview">GORM Rover Software Overview</a></h1>
+<p>Welcome to the GORM Rover Software Overview, the rover consists of these main ROS 2 packages:</p>
 <ul>
 <li><strong><code>gorm_bringup</code></strong> - Main system launcher with robot state publisher and control nodes</li>
 <li><strong><code>gorm_base_control</code></strong> - Ackermann Kinematics interface for 6-wheel, 4-steer kinematics (<code>/cmd_vel</code> → <code>/motor commands</code>)</li>
 <li><strong><code>gorm_teleop</code></strong> - Manual control via joystick (<code>teleop_twist_joy_node</code>, <code>joy-to-cmd_vel converter</code>)</li>
 <li><strong><code>gorm_sensors</code></strong> - Sensor drivers for RGBD cameras, IMU, etc.</li>
+<li><strong><code>gorm_navigation</code></strong> - Navigation stack and RL-based navigation nodes and configs</li>
+<li><strong><code>gorm_web_interface</code></strong> - Lightweight web server and web UI for monitoring and control</li>
 </ul>
 <h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
 <ul>
-<li><a href="./getting_started/installation/installation.html"><strong>Installation</strong></a>: Provides a step-by-step guide to install the AAU Rover Software on the Rover.</li>
-<li><a href="./getting_started/launching/launching.html"><strong>Launching</strong></a>: Explains how to launch the AAU Rover Software, including building and running the Docker images.</li>
+<li><a href="./getting_started/installation/installation.html"><strong>Installation</strong></a>: Provides a step-by-step guide to install the GORM Rover Software on the Rover.</li>
+<li><a href="./getting_started/launching/launching.html"><strong>Launching</strong></a>: Explains how to launch the GORM Rover Software, including building and running the Docker images.</li>
 </ul>
-<!-- - [**Examples**](./getting_started/examples/examples.md): Provides examples to help you get started with the AAU Rover Software. -->
-<div style="break-before: page; page-break-before: always;"></div><h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
-<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover. This is mainly in the context of reinstalling the software on the rover itself after a fresh OS installation, and is not necessary for development on your own machine.</p>
-<h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
-<ul>
-<li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
-<li><strong>Sensors</strong>: 2x Zed 2i Cameras,</li>
-</ul>
-<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
-<ol>
-<li><strong>Docker</strong></li>
-<li><strong>Docker Compose</strong></li>
-<li><strong>Nvidia Container Toolkit</strong></li>
-<li><strong>Resolve Joy Driver Issues</strong>: If you encounter issues with the joystick driver, you can resolve them by opening a terminal and running the following commands: see <a href="https://forums.developer.nvidia.com/t/logitech-f710-kernel-module-issues-jetpack-6/296904/21">Joy Driver Issues</a>.
-<pre><code class="language-bash">sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
-sudo dkms install -m xpad -v 0.4
-</code></pre>
-</li>
-</ol>
-<h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
-<ol>
-<li>
-<p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
-<pre><code class="language-bash">ssh gorm@192.168.0.100 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
-</code></pre>
-<p>The default password is <code>gorm</code>.</p>
-</li>
-<li>
-<p><strong>Clone the Repository</strong>: Clone the AAU Rover Software repository to the rover's computer.</p>
-<pre><code class="language-bash"> git clone https://github.com/aaU-Space-Robotics/rover-software/
- cd rover-software
-</code></pre>
-</li>
-<li>
-<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and start the main rover service in development mode (this will build images and mount the source code).</p>
-<pre><code class="language-bash">cd docker
-./run.sh rover --dev
-</code></pre>
-<blockquote>
-<p><strong>💡 Production Deployment</strong>: For production deployment with auto-restart capabilities, see the <a href="getting_started/installation/../../deployment/overview.html">Deployment Guide</a> which provides a pre-built image that doesn't require manual building inside the container.</p>
-</blockquote>
-</li>
-<li>
-<p><strong>Launch the Rover Software</strong>: After the Docker images are built and running, you can attach to the running container and launch the rover software.</p>
-<pre><code class="language-bash"># Attach to the running Docker container
-docker exec -it rover-software bash
-
-# Build the ROS2 packages inside the container
-colcon build
-source install/setup.bash
-
-# Launch the rover software
-ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
-</li>
-</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="launching-the-gorm-rover"><a class="header" href="#launching-the-gorm-rover">Launching the GORM Rover</a></h1>
-<p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This guide covers the development mode. For production deployment, see the <a href="getting_started/launching/../../deployment/overview.html">Deployment Guide</a>.</p>
+<p>The GORM rover can be launched in two modes: <strong>development mode</strong> (for active development) and <strong>production mode</strong> (for deployment). This page covers the development mode. For production deployment, see the <a href="getting_started/../../deployment/overview.html">Deployment Guide</a>.</p>
 <h2 id="quick-start-with-docker-development-mode"><a class="header" href="#quick-start-with-docker-development-mode">Quick Start with Docker (Development Mode)</a></h2>
 <ol>
 <li>
@@ -262,7 +208,7 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 <pre><code class="language-bash">./run.sh rover --dev
 
 # Attach to the running Docker container
-docker exec -it rover bash
+docker exec -it rover-software-dev bash
 </code></pre>
 </li>
 <li>
@@ -277,17 +223,23 @@ source install/setup.bash
 </code></pre>
 </li>
 <li>
-<p><strong>(Optional) Developing and changing the code</strong>: You can make changes to the code in the <code>src</code> directory on the host machine (outside the container on the Jetson Orin). The changes will be reflected inside the container because the source code is mounted as a volume. After making changes, you can rebuild the packages inside the container:</p>
-<pre><code class="language-bash">colcon build
-source install/setup.bash
-ros2 launch gorm_bringup bringup_teleop.launch.py
-</code></pre>
+<p><strong>BEFORE YOU START DEVELOPMENT</strong>: Make sure to set up your SSH keys and Git configuration as described in the <a href="getting_started/../contributing/development-setup.html">Development Setup Guide</a>.</p>
 </li>
 </ol>
-<blockquote>
-<p><strong>💡 Production Alternative</strong>: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).</p>
-</blockquote>
+<!-- > **💡 Production Alternative**: For production deployment with automatic restart and pre-built packages, start the deploy image (or use docker-compose).
+
+1. **Run the Production Deployment**: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
+    ```bash
+    ./run.sh rover --prod
+    # or with docker-compose:
+    docker-compose up -d rover-deploy
+    ``` -->
+<h2 id="quick-start-production-mode"><a class="header" href="#quick-start-production-mode">Quick Start (Production Mode)</a></h2>
 <ol>
+<li><strong>Navigate to the Rover Software Directory</strong>: Open a terminal and navigate to the directory where the rover software (on the rover) is located.
+<pre><code class="language-bash">cd /workspace/rover-software/docker
+</code></pre>
+</li>
 <li><strong>Run the Production Deployment</strong>: Start the production deployment which runs continuously and automatically restarts if it crashes or the system reboots.
 <pre><code class="language-bash">./run.sh rover --prod
 # or with docker-compose:
@@ -295,28 +247,6 @@ docker-compose up -d rover-deploy
 </code></pre>
 </li>
 </ol>
-<!-- ## Launching the GORM Rover
-**Full system bringup:**
-```bash
-ros2 launch gorm_bringup bringup.launch.py
-```
-
-**Teleop mode (manual control):**
-```bash
-ros2 launch gorm_bringup bringup_teleop.launch.py
-```
-
-**Individual components:**
-```bash
-# Motors only
-ros2 launch gorm_base_control motor_driver.launch.py
-
-# Cameras only  
-ros2 launch gorm_sensors cameras.launch.py
-
-# Joystick control only
-ros2 launch gorm_teleop teleop.launch.py
-``` -->
 <h2 id="useful-docker-inspection-commands"><a class="header" href="#useful-docker-inspection-commands">Useful docker inspection commands</a></h2>
 <pre><code>```bash
 # List running containers
@@ -329,49 +259,74 @@ docker logs -f &lt;container_name_or_id&gt;
 docker exec -it &lt;container_name_or_id&gt; bash
 ```
 </code></pre>
-<h2 id="key-topics"><a class="header" href="#key-topics">Key Topics</a></h2>
-<ul>
-<li><code>/cmd_vel</code> - Velocity commands (geometry_msgs/Twist)</li>
-<li><code>/odom</code> - Odometry feedback (nav_msgs/Odometry)</li>
-<li><code>/joy</code> - Joystick input</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Here goes the code for the example.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="deployment-overview"><a class="header" href="#deployment-overview">Deployment Overview</a></h1>
-<p>The GORM rover software provides two deployment modes: <strong>development</strong> and <strong>production</strong>.</p>
-<h2 id="development-mode"><a class="header" href="#development-mode">Development Mode</a></h2>
-<ul>
-<li>Source code mounted as volumes for live editing</li>
-<li>Manual building inside container</li>
-<li>Interactive development and testing</li>
-</ul>
-<h2 id="production-mode"><a class="header" href="#production-mode">Production Mode</a></h2>
-<ul>
-<li>ROS2 Source code copied and pre-built during image creation</li>
-<li><strong>Runs continuously in the background</strong> with automatic restarts</li>
-</ul>
-<h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>run.sh</code></td><td>The main script for starting services in different modes (e.g., <code>rover --dev</code>, <code>rover --prod</code>).</td></tr>
-<tr><td><code>docker-compose.yaml</code></td><td>Defines all services, e.g. <code>rover</code>, <code>rover-deploy</code>, <code>cameras</code>, etc.</td></tr>
-<tr><td><code>Dockerfile</code></td><td>Defines the multi-stage build environment for both development and production.</td></tr>
-<tr><td><code>build.sh</code></td><td>Script to build the production Docker image.</td></tr>
-<tr><td><code>stop.sh</code></td><td>A simple script to stop all running services defined in <code>docker-compose.yaml</code>.</td></tr>
-<tr><td><code>attach.sh</code></td><td>Helper script to quickly attach to the main <code>rover</code> container.</td></tr>
-<tr><td><code>entrypoint.sh</code></td><td>The entrypoint for the development container.</td></tr>
-<tr><td><code>entrypoint.deploy.sh</code></td><td>The entrypoint for the production container, handling startup logic.</td></tr>
-</tbody></table>
-</div>
-<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
-<pre><code class="language-bash"># Build production image
-cd docker/
-./build.sh
-
-# Deploy (runs in background continuously)
-./run.sh rover --prod
-# or using docker compose directly:
-# docker compose -f docker/docker-compose.yaml up -d rover-deploy
+<div style="break-before: page; page-break-before: always;"></div><h1 id="development-setup"><a class="header" href="#development-setup">Development Setup</a></h1>
+<h3 id="multi-developer-setup-orin-system"><a class="header" href="#multi-developer-setup-orin-system">Multi-Developer Setup (ORIN System)</a></h3>
+<p>When developing on the shared ORIN system (192.168.50.100) with multiple developers, follow these steps:</p>
+<ol>
+<li>
+<p><strong>Create personal workspace and clone:</strong></p>
+<pre><code class="language-bash"># Replace 'abmo' with your initials/username
+mkdir -p ws/abmo_dev
+cd ws/abmo_dev
+git clone https://github.com/AAU-Space-Robotics/rover-software.git
+cd rover-software
 </code></pre>
-<p>The production deployment will run continuously in the background unless manually stopped.</p>
+</li>
+<li>
+<p><strong>Configure Git locally for your identity:</strong></p>
+<pre><code class="language-bash">git config user.name "Your Name"
+git config user.email "your.email@example.com"
+</code></pre>
+</li>
+<li>
+<p><strong>SSH Agent Setup for ORIN (192.168.50.100):</strong></p>
+<p>Add to your SSH config (<code>~/.ssh/config</code>):</p>
+<pre><code> Host 192.168.50.100
+     HostName 192.168.50.100
+     User gorm
+     ForwardAgent yes
+     IdentityFile ~/.ssh/id_ed25519
+</code></pre>
+</li>
+<li>
+<p><strong>Setup SSH key evaluation:</strong></p>
+<p>Add to the bottom of your <code>~/.profile</code> and <code>~/.xprofile</code>:</p>
+<pre><code class="language-bash">eval $(keychain --eval --quiet id_ed25519)
+</code></pre>
+<p><em>create the files if they don't exist.</em></p>
+</li>
+<li>
+<p><strong>Development with Docker (Recommended):</strong></p>
+<pre><code class="language-bash">cd docker
+./run.sh rover --dev
+</code></pre>
+</li>
+<li>
+<p><strong>Native development:</strong></p>
+<pre><code class="language-bash"># Source ROS 2
+source /opt/ros/humble/setup.bash
+
+# Build packages
+colcon build
+source install/setup.bash
+</code></pre>
+</li>
+</ol>
+<h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
+<h3 id="ros-2-packages"><a class="header" href="#ros-2-packages">ROS 2 Packages</a></h3>
+<pre><code class="language-bash"># Build and test a specific package
+colcon build --packages-select gorm_control
+colcon test --packages-select gorm_control
+</code></pre>
+<h3 id="docker-testing"><a class="header" href="#docker-testing">Docker Testing</a></h3>
+<pre><code class="language-bash"># Test in development container
+cd docker
+./run.sh rover --dev
+
+# Test production build
+./build.sh
+./run.sh rover --prod
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development-vs-production"><a class="header" href="#development-vs-production">Development vs Production</a></h1>
 <h2 id="development-setup-rover-service"><a class="header" href="#development-setup-rover-service">Development Setup (<code>rover</code> service)</a></h2>
 <p><strong>Use for:</strong> Active development, debugging, testing</p>
@@ -412,7 +367,368 @@ ros2 launch gorm_bringup bringup_teleop.launch.py
 <tr><td><strong>Use Case</strong></td><td>Development &amp; testing</td><td>Deployment &amp; autonomous operation</td></tr>
 </tbody></table>
 </div>
+<h2 id="deployment-files"><a class="header" href="#deployment-files">Deployment Files</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>run.sh</code></td><td>The main script for starting services in different modes (e.g., <code>rover --dev</code>, <code>rover --prod</code>).</td></tr>
+<tr><td><code>docker-compose.yaml</code></td><td>Defines all services, e.g. <code>rover</code>, <code>rover-deploy</code>, <code>cameras</code>, etc.</td></tr>
+<tr><td><code>Dockerfile</code></td><td>Defines the multi-stage build environment for both development and production.</td></tr>
+<tr><td><code>build.sh</code></td><td>Script to build the production Docker image.</td></tr>
+<tr><td><code>stop.sh</code></td><td>A simple script to stop all running services defined in <code>docker-compose.yaml</code>.</td></tr>
+<tr><td><code>attach.sh</code></td><td>Helper script to quickly attach to the main <code>rover</code> container.</td></tr>
+<tr><td><code>entrypoint.sh</code></td><td>The entrypoint for the containers.</td></tr>
+</tbody></table>
+</div>
 <p><strong>Important:</strong> Production deployment runs continuously in the background and will automatically restart if it crashes, unless manually stopped.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ros-2-interface-guide"><a class="header" href="#ros-2-interface-guide">ROS 2 Interface Guide</a></h1>
+<p>This page documents the ROS 2 topics, services, and message types for the GORM rover.</p>
+<p>NOTE: Please update this documentation if you discover new topics or services, or if existing ones change.</p>
+<h2 id="core-topics"><a class="header" href="#core-topics">Core Topics</a></h2>
+<h3 id="control--navigation"><a class="header" href="#control--navigation">Control &amp; Navigation</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/cmd_vel</code></td><td><code>geometry_msgs/Twist</code></td><td>Primary velocity command for rover motion</td></tr>
+<tr><td><code>/goal_pose</code></td><td><code>geometry_msgs/PoseStamped</code></td><td>Navigation goal for autonomous systems</td></tr>
+<tr><td><code>/motor_commands</code></td><td><code>std_msgs/Float64MultiArray</code></td><td>Low-level commands for the 6-wheel, 4-steer system</td></tr>
+</tbody></table>
+</div>
+<h3 id="localization--odometry"><a class="header" href="#localization--odometry">Localization &amp; Odometry</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/odom</code></td><td><code>nav_msgs/Odometry</code></td><td>Odometry data for pose estimation</td></tr>
+<tr><td><code>/amcl_pose</code></td><td><code>geometry_msgs/PoseWithCovarianceStamped</code></td><td>Robot pose from the AMCL localization system</td></tr>
+<tr><td><code>/tf</code></td><td><code>tf2_msgs/TFMessage</code></td><td>Dynamic and static coordinate transforms</td></tr>
+<tr><td><code>/tf_static</code></td><td><code>tf2_msgs/TFMessage</code></td><td>Static coordinate transforms</td></tr>
+</tbody></table>
+</div>
+<h3 id="teleoperation"><a class="header" href="#teleoperation">Teleoperation</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/joy</code></td><td><code>sensor_msgs/Joy</code></td><td>Raw joystick input for manual control</td></tr>
+</tbody></table>
+</div>
+<h2 id="sensor-topics"><a class="header" href="#sensor-topics">Sensor Topics</a></h2>
+<h3 id="zed-camera-front"><a class="header" href="#zed-camera-front">ZED Camera (Front)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/zed_front/zed/depth/depth_registered</code></td><td><code>sensor_msgs/Image</code></td><td>Registered depth image</td></tr>
+<tr><td><code>/zed_front/zed/rgb/image_rect_color</code></td><td><code>sensor_msgs/Image</code></td><td>Rectified color image</td></tr>
+<tr><td><code>/zed_front/zed/rgb/image_rect_color/compressed</code></td><td><code>sensor_msgs/CompressedImage</code></td><td>Compressed color image for web streaming</td></tr>
+<tr><td><code>/zed_front/zed/point_cloud/cloud_registered</code></td><td><code>sensor_msgs/PointCloud2</code></td><td>Registered 3D point cloud</td></tr>
+<tr><td><code>/zed_front/zed/imu/data</code></td><td><code>sensor_msgs/Imu</code></td><td>IMU data from the camera</td></tr>
+<tr><td><code>/zed_front/zed/pose</code></td><td><code>geometry_msgs/PoseWithCovarianceStamped</code></td><td>Visual odometry pose from the camera</td></tr>
+</tbody></table>
+</div>
+<h3 id="gnss-if-enabled"><a class="header" href="#gnss-if-enabled">GNSS (if enabled)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/zed_front/zed/fix</code></td><td><code>sensor_msgs/NavSatFix</code></td><td>GNSS position data from ZED camera fusion</td></tr>
+</tbody></table>
+</div>
+<h3 id="u-blox-gnss"><a class="header" href="#u-blox-gnss">U-blox GNSS</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Topic</th><th>Message Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/diagnostics</code></td><td><code>diagnostic_msgs/DiagnosticArray</code></td><td>Diagnostic information from the U-blox driver</td></tr>
+<tr><td><code>/fix</code></td><td><code>sensor_msgs/NavSatFix</code></td><td>GNSS position fix</td></tr>
+<tr><td><code>/fix_velocity</code></td><td><code>geometry_msgs/TwistWithCovarianceStamped</code></td><td>GNSS velocity information</td></tr>
+<tr><td><code>/navclock</code></td><td><code>ublox_msgs/NavCLOCK</code></td><td>Navigation clock solution</td></tr>
+<tr><td><code>/navinfo</code></td><td><code>ublox_msgs/NavINFO</code></td><td>Navigation information</td></tr>
+<tr><td><code>/navposecef</code></td><td><code>ublox_msgs/NavPOSECEF</code></td><td>Position solution in ECEF coordinates</td></tr>
+<tr><td><code>/navposllh</code></td><td><code>ublox_msgs/NavPOSLLH</code></td><td>Position solution in geodetic coordinates</td></tr>
+<tr><td><code>/navsol</code></td><td><code>ublox_msgs/NavSOL</code></td><td>Navigation solution information</td></tr>
+<tr><td><code>/navstatus</code></td><td><code>ublox_msgs/NavSTATUS</code></td><td>Navigation status</td></tr>
+<tr><td><code>/navvelned</code></td><td><code>ublox_msgs/NavVELNED</code></td><td>Velocity solution in NED frame</td></tr>
+<tr><td><code>/parameter_events</code></td><td><code>rcl_interfaces/msg/ParameterEvent</code></td><td>U-blox node parameter updates</td></tr>
+</tbody></table>
+</div>
+<h2 id="services"><a class="header" href="#services">Services</a></h2>
+<h3 id="motor-control"><a class="header" href="#motor-control">Motor Control</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Service</th><th>Service Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/start_motors</code></td><td><code>std_srvs/srv/Trigger</code></td><td>Initializes and enables all motors</td></tr>
+<tr><td><code>/shutdown_motors</code></td><td><code>std_srvs/srv/Trigger</code></td><td>Safely disables all motors</td></tr>
+</tbody></table>
+</div>
+<h2 id="key-message-types"><a class="header" href="#key-message-types">Key Message Types</a></h2>
+<ul>
+<li><strong><code>geometry_msgs/Twist</code></strong>: Linear and angular velocity</li>
+<li><strong><code>geometry_msgs/PoseStamped</code></strong>: Position and orientation with a timestamp</li>
+<li><strong><code>sensor_msgs/Image</code></strong>: Raw image data</li>
+<li><strong><code>sensor_msgs/CompressedImage</code></strong>: Compressed image for low-bandwidth streaming</li>
+<li><strong><code>sensor_msgs/PointCloud2</code></strong>: 3D point cloud</li>
+<li><strong><code>sensor_msgs/Joy</code></strong>: Joystick button and axis states</li>
+<li><strong><code>nav_msgs/Odometry</code></strong>: Estimated pose and velocity</li>
+<li><strong><code>std_srvs/srv/Trigger</code></strong>: Standard service for simple actions</li>
+</ul>
+<h2 id="topic-conventions"><a class="header" href="#topic-conventions">Topic Conventions</a></h2>
+<ul>
+<li><strong>Global Topics</strong>: Core topics like <code>/cmd_vel</code> and <code>/odom</code> are in the global namespace.</li>
+<li><strong>Namespacing</strong>: Sensors are namespaced by their position (e.g., <code>/zed_front</code>).</li>
+<li><strong>Standardization</strong>: Follows ROS REP-105 for common topic names.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing-overview"><a class="header" href="#contributing-overview">Contributing Overview</a></h1>
+<p>Welcome to the GORM rover project! This guide will help you understand our development practices and contribution process to ensure smooth collaboration.</p>
+<h2 id="-important-rules"><a class="header" href="#-important-rules">🚨 Important Rules</a></h2>
+<p><strong>NEVER commit directly to <code>main</code> or <code>dev</code> branches.</strong> All changes must go through the Pull Request process.</p>
+<h2 id="key-points-for-contributors"><a class="header" href="#key-points-for-contributors">Key Points for Contributors</a></h2>
+<ul>
+<li><strong>System releases</strong> use Git tags with format <code>vMAJOR.MINOR.PATCH</code> (e.g., <code>v1.0.0</code>)</li>
+<li><strong>ROS 2 packages</strong> version independently using <code>MAJOR.MINOR.PATCH</code> format in their <code>package.xml</code></li>
+<li>All changes must be made through Pull Requests</li>
+<li>Follow our branching strategy and commit conventions</li>
+<li>Test your changes before submitting PRs</li>
+<li>Update documentation as needed</li>
+</ul>
+<h2 id="version-updates"><a class="header" href="#version-updates">Version Updates</a></h2>
+<p>When making changes that affect versioning:</p>
+<ol>
+<li><strong>Breaking changes</strong>: Increment MAJOR version</li>
+<li><strong>New features</strong>: Increment MINOR version</li>
+<li><strong>Bug fixes</strong>: Increment PATCH version</li>
+</ol>
+<p>Always update <code>package.xml</code> when changing ROS 2 package versions.</p>
+<h2 id="getting-help"><a class="header" href="#getting-help">Getting Help</a></h2>
+<ul>
+<li><strong>Issues:</strong> Use GitHub Issues for bugs and feature requests</li>
+<li><strong>Discussions:</strong> Use GitHub Discussions for questions and ideas</li>
+<li><strong>Maintainers:</strong> Tag <code>@AAU-Space-Robotics</code> maintainers for urgent matters</li>
+</ul>
+<hr />
+<p><strong>Remember:</strong> Never commit directly to <code>main</code> or <code>dev</code>. Always use Pull Requests for code changes.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="branching-strategy"><a class="header" href="#branching-strategy">Branching Strategy</a></h1>
+<p>We follow a structured branching approach to maintain code quality and enable parallel development:</p>
+<h2 id="branch-types"><a class="header" href="#branch-types">Branch Types</a></h2>
+<ul>
+<li><strong><code>main</code></strong> - Production-ready code. Protected branch.</li>
+<li><strong><code>dev</code></strong> - Integration branch for features. Protected branch.</li>
+<li><strong><code>feature/</code></strong> - New features and enhancements</li>
+<li><strong><code>bugfix/</code></strong> - Bug fixes for existing functionality</li>
+<li><strong><code>hotfix/</code></strong> - Critical fixes that need immediate deployment</li>
+<li><strong><code>release/</code></strong> - Release preparation and versioning</li>
+</ul>
+<h2 id="branch-naming-convention"><a class="header" href="#branch-naming-convention">Branch Naming Convention</a></h2>
+<p>Use descriptive names with the appropriate prefix:</p>
+<pre><code>feature/add-navigation-controller
+feature/improve-motor-control
+bugfix/fix-odometry-calculation
+bugfix/resolve-docker-build-issue
+hotfix/critical-localization-failure
+release/v1.2.0
+</code></pre>
+<h2 id="workflow"><a class="header" href="#workflow">Workflow</a></h2>
+<ol>
+<li>
+<p><strong>Create feature branch from <code>dev</code>:</strong></p>
+<pre><code class="language-bash">git checkout dev
+git pull origin dev
+git checkout -b feature/your-feature-name
+</code></pre>
+</li>
+<li>
+<p><strong>Work on your changes and commit regularly</strong></p>
+</li>
+<li>
+<p><strong>Push your branch and create a Pull Request to <code>dev</code></strong></p>
+</li>
+<li>
+<p><strong>After review and approval, merge to <code>dev</code></strong></p>
+</li>
+<li>
+<p><strong>For releases, create a release branch from <code>dev</code> and merge to <code>main</code></strong></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="commit-guidelines"><a class="header" href="#commit-guidelines">Commit Guidelines</a></h1>
+<p>We use <strong>Conventional Commits</strong> to maintain a clear and searchable commit history.</p>
+<h2 id="commit-message-format"><a class="header" href="#commit-message-format">Commit Message Format</a></h2>
+<pre><code>&lt;type&gt;[optional scope]: &lt;description&gt;
+
+[optional body]
+
+[optional footer(s)]
+</code></pre>
+<h2 id="types"><a class="header" href="#types">Types</a></h2>
+<ul>
+<li><strong><code>feat:</code></strong> - A new feature</li>
+<li><strong><code>fix:</code></strong> - A bug fix</li>
+<li><strong><code>docs:</code></strong> - Documentation changes</li>
+<li><strong><code>style:</code></strong> - Code style changes (formatting, no logic changes)</li>
+<li><strong><code>refactor:</code></strong> - Code refactoring without changing functionality</li>
+<li><strong><code>perf:</code></strong> - Performance improvements</li>
+<li><strong><code>test:</code></strong> - Adding or updating tests</li>
+<li><strong><code>chore:</code></strong> - Maintenance tasks, dependency updates</li>
+<li><strong><code>ci:</code></strong> - CI/CD configuration changes</li>
+<li><strong><code>build:</code></strong> - Build system or external dependency changes</li>
+</ul>
+<h2 id="scopes-optional"><a class="header" href="#scopes-optional">Scopes (Optional)</a></h2>
+<p>Use scopes to indicate the area of change:</p>
+<ul>
+<li><strong><code>ros2:</code></strong> - ROS 2 packages and nodes</li>
+<li><strong><code>docker:</code></strong> - Docker configuration and tooling</li>
+<li><strong><code>control:</code></strong> - Control system components</li>
+<li><strong><code>perception:</code></strong> - Perception system components</li>
+<li><strong><code>teleop:</code></strong> - Teleoperation functionality</li>
+<li><strong><code>nav:</code></strong> - Navigation stack components</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<pre><code class="language-bash">feat(control): add PID controller for motor speed regulation
+
+fix(nav): resolve timeout issue in planner server subscription
+
+docs: update README with new installation instructions
+
+style(ros2): format Python code according to PEP 8
+
+refactor(docker): simplify compose service configuration
+
+chore: update dependencies to latest stable versions
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pull-request-process"><a class="header" href="#pull-request-process">Pull Request Process</a></h1>
+<h2 id="before-creating-a-pr"><a class="header" href="#before-creating-a-pr">Before Creating a PR</a></h2>
+<ol>
+<li>
+<p><strong>Ensure your branch is up to date:</strong></p>
+<pre><code class="language-bash">git checkout dev
+git pull origin dev
+git checkout your-branch
+git rebase dev  # or merge dev into your branch
+</code></pre>
+</li>
+<li>
+<p><strong>Test your changes:</strong></p>
+<pre><code class="language-bash"># For ROS 2 packages
+colcon build --packages-select &lt;package_name&gt;
+colcon test --packages-select &lt;package_name&gt;
+</code></pre>
+</li>
+</ol>
+<h2 id="pr-requirements"><a class="header" href="#pr-requirements">PR Requirements</a></h2>
+<ul>
+<li><strong>Link the related issue:</strong> Use <code>Fixes #&lt;issue-number&gt;</code> or <code>Closes #&lt;issue-number&gt;</code></li>
+<li><strong>Clear title:</strong> Use conventional commit format for PR title</li>
+<li><strong>Detailed description:</strong> Explain what, why, and how</li>
+<li><strong>Test coverage:</strong> Include test results or explain why tests aren't needed</li>
+<li><strong>Breaking changes:</strong> Clearly document any breaking changes</li>
+</ul>
+<h2 id="pr-template"><a class="header" href="#pr-template">PR Template</a></h2>
+<pre><code class="language-markdown">## Description
+Brief description of changes made.
+
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+
+## Related Issues
+Fixes #&lt;issue-number&gt;
+
+## Testing
+- [ ] I have run the existing tests
+- [ ] I have added tests for my changes
+- [ ] All tests pass locally
+
+## Checklist
+- [ ] My code follows the project's style guidelines
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have updated documentation as needed
+- [ ] My changes generate no new warnings
+- [ ] I have tested this change in the appropriate environment (Docker/hardware)
+
+## Additional Notes
+Any additional information, deployment notes, or concerns.
+</code></pre>
+<h2 id="review-process"><a class="header" href="#review-process">Review Process</a></h2>
+<ol>
+<li><strong>Automated Checks:</strong> All PRs must pass automated linting and build checks</li>
+<li><strong>Code Review:</strong> At least one maintainer review required</li>
+<li><strong>Testing:</strong> Verify changes work in relevant environments</li>
+<li><strong>Documentation:</strong> Ensure documentation is updated if needed</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="code-style-guidelines"><a class="header" href="#code-style-guidelines">Code Style Guidelines</a></h1>
+<h2 id="python-ros-2-packages"><a class="header" href="#python-ros-2-packages">Python (ROS 2 Packages)</a></h2>
+<ul>
+<li>Follow <strong>PEP 8</strong> style guide</li>
+<li>Use <strong>type hints</strong> where appropriate</li>
+<li>Maximum line length: <strong>120 characters</strong></li>
+<li>Use <strong>docstrings</strong> for classes and functions</li>
+<li>Import order: standard library, third-party, local imports</li>
+</ul>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+from typing import Optional
+
+import rclpy
+from rclpy.node import Node
+
+class MyNode(Node):
+    """Brief description of the node's purpose."""
+    
+    def __init__(self) -&gt; None:
+        super().__init__('my_node')
+        self.get_logger().info("Node initialized")
+</code></pre>
+<h2 id="c"><a class="header" href="#c">C++</a></h2>
+<ul>
+<li>Follow <strong>Google C++ Style Guide</strong></li>
+<li>Use <strong>camelCase</strong> for variables and functions</li>
+<li>Use <strong>PascalCase</strong> for classes and structs</li>
+<li>Maximum line length: <strong>100 characters</strong></li>
+<li>Use meaningful variable names</li>
+</ul>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-cpp">#include &lt;rclcpp/rclcpp.hpp&gt;
+
+class MyNode : public rclcpp::Node
+{
+public:
+  MyNode() : Node("my_node")
+  {
+    RCLCPP_INFO(this-&gt;get_logger(), "Node initialized");
+  }
+
+private:
+  void processData();
+};
+</code></pre>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
+<ul>
+<li>Update <strong>README.md</strong> for significant changes</li>
+<li>Add <strong>docstrings/comments</strong> for complex logic</li>
+<li>Update <strong>package.xml</strong> descriptions when needed</li>
+<li>Include <strong>examples</strong> in documentation</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation-guide"><a class="header" href="#installation-guide">Installation Guide</a></h1>
+<p>Here is a step-by-step guide to install the ROS2 Navigation Stack on the Rover. This is mainly in the context of reinstalling the software on the rover itself after a fresh OS installation, and is not necessary for development on your own machine.</p>
+<h2 id="hardware-requirements"><a class="header" href="#hardware-requirements">Hardware Requirements</a></h2>
+<ul>
+<li><strong>Computer</strong>: A Nvidia Jetson Orin with Jetpack 6.1.</li>
+<li><strong>Sensors</strong>: 2x Zed 2i Cameras,</li>
+</ul>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ol>
+<li><strong>Docker</strong></li>
+<li><strong>Docker Compose</strong></li>
+<li><strong>Nvidia Container Toolkit</strong></li>
+<li><strong>Resolve Joy Driver Issues</strong>: If you encounter issues with the joystick driver, you can resolve them by opening a terminal and running the following commands: see <a href="https://forums.developer.nvidia.com/t/logitech-f710-kernel-module-issues-jetpack-6/296904/21">Joy Driver Issues</a>.
+<pre><code class="language-bash">sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
+sudo dkms install -m xpad -v 0.4
+</code></pre>
+</li>
+</ol>
+<h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
+<ol>
+<li>
+<p><strong>Connect to the Rover</strong>: SSH into the rover's computer using the following command:</p>
+<pre><code class="language-bash">ssh gorm@192.168.50.100 # or ssh gorm@&lt;ROVER_IP_ADDRESS&gt;
+</code></pre>
+<p>The default password is <code>gorm</code>.</p>
+</li>
+<li>
+<p><strong>Clone the Repository</strong>: Clone the GORM Rover Software repository to the rover's computer.</p>
+<pre><code class="language-bash"> git clone https://github.com/aaU-Space-Robotics/rover-software/
+ cd rover-software
+</code></pre>
+</li>
+<li>
+<p><strong>Build &amp; Run the Docker Images</strong>: Navigate to the <code>docker</code> directory and start the main rover service in development mode (this will build images and mount the source code).</p>
+<pre><code class="language-bash">cd docker
+./run.sh rover --prod
+</code></pre>
+</li>
+</ol>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Overview - AAU Rover Software Documentation</title>
+        <title>Overview - GORM Rover Software Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -140,7 +140,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">AAU Rover Software Documentation</h1>
+                    <h1 class="menu-title">GORM Rover Software Documentation</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -177,28 +177,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <!-- This is the initial pre-release of this RL-suite. Please let me know if there is information missing by contacting me at abmoRobotics@gmail.com. -->
-<h1 id="aau-rover-software-overview"><a class="header" href="#aau-rover-software-overview">AAU Rover Software Overview</a></h1>
-<p>Welcome to the AAU Rover Software Overview, the rover consists of these main ROS 2 packages:</p>
+                        <p><img src="images/rover.jpg" alt="GORM Rover" /></p>
+<h1 id="gorm-rover-software-overview"><a class="header" href="#gorm-rover-software-overview">GORM Rover Software Overview</a></h1>
+<p>Welcome to the GORM Rover Software Overview, the rover consists of these main ROS 2 packages:</p>
 <ul>
 <li><strong><code>gorm_bringup</code></strong> - Main system launcher with robot state publisher and control nodes</li>
 <li><strong><code>gorm_base_control</code></strong> - Ackermann Kinematics interface for 6-wheel, 4-steer kinematics (<code>/cmd_vel</code> → <code>/motor commands</code>)</li>
 <li><strong><code>gorm_teleop</code></strong> - Manual control via joystick (<code>teleop_twist_joy_node</code>, <code>joy-to-cmd_vel converter</code>)</li>
 <li><strong><code>gorm_sensors</code></strong> - Sensor drivers for RGBD cameras, IMU, etc.</li>
+<li><strong><code>gorm_navigation</code></strong> - Navigation stack and RL-based navigation nodes and configs</li>
+<li><strong><code>gorm_web_interface</code></strong> - Lightweight web server and web UI for monitoring and control</li>
 </ul>
 <h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
 <ul>
-<li><a href="./getting_started/installation/installation.html"><strong>Installation</strong></a>: Provides a step-by-step guide to install the AAU Rover Software on the Rover.</li>
-<li><a href="./getting_started/launching/launching.html"><strong>Launching</strong></a>: Explains how to launch the AAU Rover Software, including building and running the Docker images.</li>
+<li><a href="./getting_started/installation/installation.html"><strong>Installation</strong></a>: Provides a step-by-step guide to install the GORM Rover Software on the Rover.</li>
+<li><a href="./getting_started/launching/launching.html"><strong>Launching</strong></a>: Explains how to launch the GORM Rover Software, including building and running the Docker images.</li>
 </ul>
-<!-- - [**Examples**](./getting_started/examples/examples.md): Provides examples to help you get started with the AAU Rover Software. -->
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next prefetch" href="getting_started/installation/installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="getting_started/launching.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -209,7 +210,7 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next prefetch" href="getting_started/installation/installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="getting_started/launching.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
