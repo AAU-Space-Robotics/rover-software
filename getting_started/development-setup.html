@@ -207,6 +207,12 @@ git config user.email "your.email@example.com"
 </code></pre>
 </li>
 <li>
+<p><strong>Install Keychain</strong></p>
+<pre><code>sudo apt-get update
+sudo apt-get install keychain
+</code></pre>
+</li>
+<li>
 <p><strong>Setup SSH key evaluation:</strong></p>
 <p>Add to the bottom of your <code>~/.profile</code> and <code>~/.xprofile</code>:</p>
 <pre><code class="language-bash">eval $(keychain --eval --quiet id_ed25519)
