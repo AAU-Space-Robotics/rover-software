@@ -29,21 +29,25 @@ When developing on the shared ORIN system (192.168.50.100) with multiple develop
         ForwardAgent yes
         IdentityFile ~/.ssh/id_ed25519
    ```
-
-4. **Setup SSH key evaluation:**
+4. **Install Keychain**
+   ```
+   sudo apt-get update
+   sudo apt-get install keychain
+   ```
+5. **Setup SSH key evaluation:**
    
    Add to the bottom of your `~/.profile` and `~/.xprofile`:
    ```bash
    eval $(keychain --eval --quiet id_ed25519)
    ```
    _create the files if they don't exist._
-5. **Development with Docker (Recommended):**
+6. **Development with Docker (Recommended):**
    ```bash
    cd docker
    ./run.sh rover --dev
    ```
 
-6. **Native development:**
+7. **Native development:**
    ```bash
    # Source ROS 2
    source /opt/ros/humble/setup.bash
