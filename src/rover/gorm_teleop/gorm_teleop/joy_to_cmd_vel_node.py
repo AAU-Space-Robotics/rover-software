@@ -12,7 +12,7 @@ class JoyToVelNode(Node):
         super().__init__('joy_to_vel_converter')
 
         # Declare parameters for input and output topics
-        self.declare_parameter('joy_topic', '/joy/joy')
+        self.declare_parameter('joy_topic', '/local/joy')
         self.declare_parameter('twist_topic', '/joystick/cmd_vel')
 
         joy_topic = self.get_parameter('joy_topic').get_parameter_value().string_value

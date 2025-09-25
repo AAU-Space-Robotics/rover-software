@@ -42,7 +42,7 @@ def generate_launch_description():
         name='joy_node',
         output='screen',
         remappings=[
-            ('/joy/joy', '/local/joy')
+            ('/joy', '/local/joy')
         ]
     )
 

@@ -27,24 +27,21 @@ def generate_launch_description():
     # Include control switching (twist_mux) system
     control_switch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('gorm_bringup'), 'launch'),
-            '/control_switch.launch.py'
+            os.path.join(get_package_share_directory('gorm_bringup'), 'launch', 'control_switch.launch.py')
         ])
     )
 
     # Include teleop system  
     teleop_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('gorm_teleop'), 'launch'),
-            '/teleop.launch.py'
+            os.path.join(get_package_share_directory('gorm_teleop'), 'launch', 'teleop.launch.py')
         ])
     )
 
     # Web interface (includes rosbridge and web server)
     web_interface = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('gorm_web_interface'), 'launch'),
-            '/web_interface.launch.py'
+            os.path.join(get_package_share_directory('gorm_web_interface'), 'launch', 'web_interface.launch.py')
         ])
     )
 
