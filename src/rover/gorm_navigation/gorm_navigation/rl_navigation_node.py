@@ -12,7 +12,7 @@ provide autonomous navigation capabilities using trained RL models.
 Constraints:
 - Language: Python (suitable for high-level navigation logic)
 - Key Inputs: Depth images from ZED camera, goal position, robot pose
-- Key Outputs: Velocity commands to /cmd_vel topic
+- Key Outputs: Velocity commands to /autonomous/cmd_vel topic
 - Uses Triton Inference Server for RL model inference
 """
 
@@ -103,7 +103,7 @@ class GormRLNavigationNode(Node):
         
         # Setup Publishers
         self.velocity_publisher = self.create_publisher(
-            Twist, '/cmd_vel', 10)
+            Twist, '/autonomous/cmd_vel', 10)
         
         # Setup Subscribers
         # Subscribe to ZED depth topic
