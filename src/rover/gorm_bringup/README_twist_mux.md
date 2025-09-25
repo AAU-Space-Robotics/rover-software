@@ -127,7 +127,7 @@ twist_mux:
 - `/autonomous/cmd_vel` - Autonomous navigation commands
 
 ### Intermediate Topics
-- `/joy/joy` - Raw data from the local joystick
+- `/local/joy` - Raw data from the local joystick
 - `/remote/joy` - Raw data from the remote joystick
 
 ### Output Topics (twist_mux publishes to these)
