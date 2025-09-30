@@ -56,6 +56,8 @@ services:
         ZED_ROS2_WRAPPER_BRANCH: master
         ZED_ROS2_WRAPPER_URL: https://github.com/stereolabs/zed-ros2-wrapper.git
     container_name: rover-cameras
+    depends_on:
+      - zenoh-router
     volumes:
       - ../src:/home/workspace/src
       - /tmp/argus_socket:/tmp/argus_socket
