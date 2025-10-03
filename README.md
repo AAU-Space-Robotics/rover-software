@@ -1,5 +1,5 @@
 # AAU Space Robotics - System Setup Repository
-This repository contains the files and documentation for running the GORM rover software on the physical rover or in simulation.
+This repository contains the files and documentation for running the GORM rover software on the physical rover or in simulation..
 
 Documentation site: https://aau-space-robotics.github.io/aau-rover/
 
