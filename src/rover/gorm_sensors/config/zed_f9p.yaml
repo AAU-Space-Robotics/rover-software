@@ -1,0 +1,44 @@
+ublox_gps_node:
+  ros__parameters:
+    debug: 0                    # Range 0-4 (0 means no debug statements will print)
+    device: /dev/ttyACM0
+    frame_id: gps
+    uart1:
+      # The original config requested 460800 which may not be supported by
+      # the host/driver for /dev/ttyACM0 (USB CDC). Trying to set that baud
+      # at startup can fail and cause the node to exit with
+      # 'Could not configure serial baud rate'. Use a safer default here
+      # (115200) or change to the value your system supports. If you want
+      # the node to avoid reconfiguring the device at startup, set
+      # 'config_on_startup' to false (below).
+      baudrate: 38400
+    # If true, node will try to reconfigure the device UART on startup.
+    # Disable this if the device is connected over USB (e.g. /dev/ttyACM0)
+    # and changing the baud via UBX messages or host driver is unsupported.
+    config_on_startup: false
+    gnss:
+      glonass: true
+      beidou: true
+      gps: true
+      qzss: true
+      galileo: true
+      imes: true
+    # TMODE3 Config
+    tmode3: 1                   # Survey-In Mode
+    sv_in:
+      reset: True               # True: disables and re-enables survey-in (resets)
+                                # False: Disables survey-in only if TMODE3 is
+                                # disabled
+      min_dur: 300              # Survey-In Minimum Duration [s]
+      acc_lim: 3.0              # Survey-In Accuracy Limit [m]
+ 
+    inf:
+      all: true                   # Whether to display all INF messages in console
+ 
+    publish:
+      all: false
+      nav:
+        all: true
+        relposned: true
+        posllh: true
+        posecef: true

@@ -7,6 +7,8 @@
   <maintainer email="antonbm2008@gmail.com">anton</maintainer>
   <license>TODO: License declaration</license>
 
+
+  <exec_depend>ublox_gps</exec_depend>
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
