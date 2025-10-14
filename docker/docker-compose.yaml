@@ -28,8 +28,10 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - ROS_DOMAIN_ID=0
-      - FASTRTPS_DEFAULT_PROFILES_FILE=/home/workspace/fastrtps-profiles.xml
+      # - ROS_DOMAIN_ID=0
+      # - FASTRTPS_DEFAULT_PROFILES_FILE=/home/workspace/fastrtps-profiles.xml
+      - ROS_DOMAIN_ID=50
+      - RMW_IMPLEMENTATION=rmw_zenoh_cpp
     network_mode: host
     privileged: true
     runtime: nvidia
@@ -66,13 +68,15 @@ services:
       - /usr/local/zed/resources/:/usr/local/zed/resources/
       - /tmp/.X11-unix/:/tmp/.X11-unix
       - /dev/shm:/dev/shm
+      - ./config/fastrtps-profiles.xml:/home/workspace/fastrtps-profiles.xml
     working_dir: /home/workspace
     stdin_open: true
     tty: true
     environment:
       - ROS_DOMAIN_ID=50
       - RMW_IMPLEMENTATION=rmw_zenoh_cpp
-      # - RMW_IMPLEMENTATION=rmw_fastrtps_cpp - default dds implementation, however fucks the networking when using cameras
+      #- RMW_IMPLEMENTATION=rmw_fastrtps_cpp #- default dds implementation, however fucks the networking when using cameras
+      #- FASTRTPS_DEFAULT_PROFILES_FILE=/home/workspace/fastrtps-profiles.xml
     network_mode: host
     privileged: true
     runtime: nvidia
@@ -130,8 +134,10 @@ services:
       - ./config/fastrtps-profiles.xml:/home/workspace/fastrtps-profiles.xml
     working_dir: /home/workspace
     environment:
-      - ROS_DOMAIN_ID=0
-      - FASTRTPS_DEFAULT_PROFILES_FILE=/home/workspace/fastrtps-profiles.xml
+      # - ROS_DOMAIN_ID=0
+      # - FASTRTPS_DEFAULT_PROFILES_FILE=/home/workspace/fastrtps-profiles.xml
+      - ROS_DOMAIN_ID=50
+      - RMW_IMPLEMENTATION=rmw_zenoh_cpp
     network_mode: host
     privileged: true
     runtime: nvidia
