@@ -26,7 +26,7 @@ class AckermannNode(Node):
         
         # Timer and timestamp
         self.last_message_time = self.get_clock().now()
-        # self.timer = self.create_timer(0.1, self.check_timeout)
+        self.timer = self.create_timer(0.1, self.check_timeout)
         
         self.get_logger().info("Ackermann node started successfully")
 
@@ -155,13 +155,13 @@ class AckermannNode(Node):
         return steering_angles, wheel_velocities
         
     def check_timeout(self):
-        # Check if more than 3 seconds have passed since the last message
+        # Check if more than 0.5 seconds have passed since the last message
         current_time = self.get_clock().now()
         time_diff = current_time - self.last_message_time
     
         if time_diff.nanoseconds > 0.5 * 1e9:
-            # Stop the vehicle by sending zero commands if no message received for 3 seconds
-            self.get_logger().info("No command received for 3 seconds, stopping the vehicle.")
+            # Stop the vehicle by sending zero commands if no message received for 0.5 seconds
+            self.get_logger().info("No command received for 0.5 seconds, stopping the vehicle.")
             motor_commands = Float64MultiArray()
             motor_commands.data = [0.0] * 10  # Assuming 4 steering angles + 6 wheel velocities
             self.publisher_.publish(motor_commands)
